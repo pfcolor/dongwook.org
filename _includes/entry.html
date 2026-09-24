@@ -1,0 +1,68 @@
+{% if entry.id %}
+  {% assign title = entry.title | markdownify | strip_html %}
+{% else %}
+  {% assign title = entry.title %}
+{% endif %}
+
+{% if page.layout == 'categories' or page.layout == 'tags' %}
+  {% assign entry_heading = 'h3' %}
+{% else %}
+  {% assign entry_heading = 'h2' %}
+{% endif %}
+
+<article class="entry h-entry">
+  <header class="entry-header">
+    <{{ entry_heading }} class="entry-title p-name">
+      {% if entry.link %}
+        <a class="u-bookmark-of" href="{{ entry.link }}">{{ title }}</a> <a href="{{ entry.url | relative_url }}" rel="bookmark"><span class="link-arrow">&rarr;</span></a>
+      {% else %}
+        <a href="{{ entry.url | relative_url }}" rel="bookmark">{{ title }}</a>
+      {% endif %}
+    </{{ entry_heading }}>
+    {% if entry.image.thumbnail %}
+      {% assign entry_image = entry.image.thumbnail %}
+      {% unless entry_image contains '://' %}
+        {% assign entry_image = entry_image | relative_url %}
+      {% endunless %}
+      {% assign entry_image = entry_image | escape %}
+      <img class="entry-image u-photo" src="{{ entry_image }}" alt="">
+    {% endif %}
+  </header>
+  {% if page.show_excerpts == false %}
+    <div class="entry-content e-content">
+      {{ entry.content }}
+    </div>
+  {% else %}
+    <div class="entry-excerpt p-summary">
+      {% if entry.excerpt %}
+        {% assign excerpt_html = entry.excerpt | markdownify | strip
+          | replace: '<h5', '<h6' | replace: '</h5>', '</h6>'
+          | replace: '<h4', '<h5' | replace: '</h4>', '</h5>'
+          | replace: '<h3', '<h4' | replace: '</h3>', '</h4>'
+          | replace: '<h2', '<h3' | replace: '</h2>', '</h3>' %}
+        {% assign excerpt_size = excerpt_html | strip_html | strip | size %}
+        {% assign content_size = entry.content | strip_html | strip | size %}
+        {% if excerpt_size < content_size %}
+          {% assign ellipsis = ' <span aria-hidden="true">[&hellip;]</span>' %}
+          {% if excerpt_html contains '</p>' %}
+            {%- assign parts = excerpt_html | split: '</p>' -%}
+            {%- for part in parts -%}
+              {{ part }}{% if forloop.last %}{{ ellipsis }}{% endif %}</p>
+            {%- endfor -%}
+          {% else %}
+            {{ excerpt_html }}{{ ellipsis }}
+          {% endif %}
+        {% else %}
+          {{ excerpt_html }}
+        {% endif %}
+      {% endif %}
+      <p class="more-link"><a href="{{ entry.url | relative_url }}">{{ site.data.text[site.locale].read_more | default: 'Read more' }} <span aria-hidden="true">&rarr;</span><span class="screen-reader-text"> - {{ title }}</span></a></p>
+    </div>
+  {% endif %}
+  {% if site.read_time or entry.date and page.layout != 'collection' %}
+    <footer class="entry-meta">
+      {% if site.read_time %}{% include read-time.html %}{% endif %}
+      {% if entry.date %}{% include entry-date.html %}{% endif %}
+    </footer>
+  {% endif %}
+</article>

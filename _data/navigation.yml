@@ -1,0 +1,10 @@
+# 상단 메뉴
+
+- title: 홈
+  url: /
+- title: 카테고리
+  url: /categories/
+- title: 태그
+  url: /tags/
+- title: 검색
+  url: /search/
