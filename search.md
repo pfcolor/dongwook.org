@@ -1,5 +1,5 @@
 ---
 layout: search
-title: Search
+title: 검색
 permalink: /search/
 ---
