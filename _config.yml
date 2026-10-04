@@ -1,5 +1,7 @@
 title: dongwook
 description: odds and ends. written down.
+twitter:
+  card: summary_large_image
 url: "https://dongwook.org"
 baseurl: ""
 lang: ko
@@ -21,6 +23,10 @@ feed:
   path: atom.xml
 
 defaults:
+  - scope:
+      path: ""
+    values:
+      image: /assets/img/og.png
   - scope:
       path: ""
       type: posts
