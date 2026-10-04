@@ -1,0 +1,237 @@
+:root {
+  --bg: #ffffff;
+  --text: #1f1f1f;
+  --muted: #8a8a8a;
+  --link: #1f1f1f;
+  --border: #e4e4e4;
+  --code-bg: #f4f4f4;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: #161616;
+  --text: #e6e6e6;
+  --muted: #8f8f8f;
+  --link: #e6e6e6;
+  --border: #2e2e2e;
+  --code-bg: #232323;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 4rem;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Noto Sans KR", system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.75;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+a {
+  color: var(--link);
+  text-underline-offset: 0.2em;
+}
+
+/* 머리글: 사이트 이름 + 소문자 메뉴 + 테마 토글 */
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.site-title {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site-header nav {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.site-header nav a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.site-header nav a:hover,
+.site-header nav a[aria-current="page"] {
+  color: var(--text);
+}
+
+.theme-toggle {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  color: var(--text);
+}
+
+.theme-toggle::before {
+  content: "☾";
+}
+
+:root[data-theme="dark"] .theme-toggle::before {
+  content: "☀";
+}
+
+/* 홈: 전체 글 목록 */
+.post-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.post-list li {
+  margin: 0.3rem 0;
+}
+
+.post-list time,
+.date {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.post-list a {
+  text-decoration: none;
+}
+
+.post-list a:hover {
+  text-decoration: underline;
+}
+
+/* 글 본문 */
+h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.6rem;
+  line-height: 1.4;
+}
+
+.subtitle {
+  margin: 0 0 2rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.date {
+  display: block;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+}
+
+.content h2,
+.content h3,
+.content h4 {
+  margin: 2em 0 0.5em;
+  line-height: 1.4;
+}
+
+.content h2 { font-size: 1.3rem; }
+.content h3 { font-size: 1.15rem; }
+.content h4 { font-size: 1rem; }
+
+.content p,
+.content ul,
+.content ol {
+  margin: 0 0 1.1em;
+}
+
+.content img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 한글에는 이탤릭이 어울리지 않아 쓰지 않는다 */
+em,
+i,
+cite {
+  font-style: normal;
+}
+
+blockquote {
+  margin: 1.5em 0;
+  padding: 0 0 0 1rem;
+  border-left: 3px solid var(--border);
+}
+
+blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* quotes: 출처는 인용문에 붙이고, 인용과 인용 사이는 넓게 */
+.content blockquote:has(+ .source) {
+  margin-bottom: 0.5rem;
+}
+
+.content .source {
+  margin: 0 0 3.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.content .source a {
+  color: var(--muted);
+}
+
+hr {
+  margin: 2.5em 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+code {
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  background: var(--code-bg);
+  font-size: 0.9em;
+}
+
+pre {
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: 4px;
+  background: var(--code-bg);
+  line-height: 1.5;
+}
+
+pre code {
+  padding: 0;
+  background: none;
+}
+
+/* 이전/다음 글 */
+.post-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.post-nav a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.post-nav a:hover {
+  color: var(--text);
+}

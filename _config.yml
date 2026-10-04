@@ -1,19 +1,9 @@
-theme: jekyll-theme-so-simple
-skin: "/assets/css/skins/default.css"
-locale: en-US
-
 title: Dongwook
-description: 이것저것 적어두는 곳
+description: odds and ends. written down.
 url: "https://dongwook.org"
 baseurl: ""
 lang: ko
 timezone: Asia/Seoul
-
-date_format: "%Y-%m-%d"
-
-google_fonts:
-  - name: "Noto Sans KR"
-    weights: "400,700"
 
 markdown: kramdown
 kramdown:
@@ -23,14 +13,12 @@ kramdown:
 permalink: /:year/:month/:day/:title/
 
 plugins:
-  - jekyll-paginate
-  - jekyll-sitemap
-  - jekyll-gist
   - jekyll-feed
+  - jekyll-sitemap
   - jekyll-seo-tag
 
-paginate: 5
-paginate_path: /page:num/
+feed:
+  path: atom.xml
 
 defaults:
   - scope:
@@ -38,17 +26,6 @@ defaults:
       type: posts
     values:
       layout: post
-
-# Site Author
-author:
-  email:
-  links:
-
-# Footer Links
-footer_links:
-  - title: Feed
-    url: atom.xml
-    icon: fas fa-rss-square
 
 exclude:
   - Gemfile

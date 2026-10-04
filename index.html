@@ -1,6 +1,14 @@
 ---
-layout: home
-paginate: true
-show_excerpts: true
-entries_layout: list
+layout: default
 ---
+
+<h1>notes</h1>
+<p class="subtitle">{{ site.description }}</p>
+
+<ul class="post-list">
+  {%- for post in site.posts %}
+    <li>
+      <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time> — <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+    </li>
+  {%- endfor %}
+</ul>

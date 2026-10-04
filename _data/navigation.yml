@@ -1,10 +1,10 @@
-# 상단 메뉴
+# 상단 메뉴 (소문자로 짧게)
 
-- title: 홈
-  url: /
-- title: 카테고리
-  url: /categories/
-- title: 태그
-  url: /tags/
-- title: 검색
-  url: /search/
+- title: books
+  url: /books/
+- title: listening
+  url: /listening/
+- title: quotes
+  url: /quotes/
+- title: rss
+  url: /atom.xml
