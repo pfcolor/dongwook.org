@@ -21,7 +21,7 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    <span class="site-title">{{ site.title }}</span>
     <nav>
       {%- for item in site.data.navigation %}
         <a href="{{ item.url | relative_url }}"{% if page.url == item.url or item.url == "/" and page.collection == "posts" %} aria-current="page"{% endif %}>{{ item.title }}</a>
@@ -35,7 +35,7 @@
   </main>
 
   <footer class="site-footer">
-    <span>&copy; {{ site.time | date: "%Y" }} {{ site.title }}</span>
+    <span>&copy; {{ site.title }}</span>
     <a href="{{ '/atom.xml' | relative_url }}">rss</a>
   </footer>
 
