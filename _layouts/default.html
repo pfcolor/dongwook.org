@@ -35,6 +35,13 @@
   </main>
 
   <script>
+    /* 직접 고른 적이 없으면 폰/OS의 라이트·다크 설정 변화를 그대로 따라간다 */
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function (e) {
+      var saved;
+      try { saved = localStorage.getItem("theme"); } catch (err) {}
+      if (!saved) document.documentElement.dataset.theme = e.matches ? "dark" : "light";
+    });
+
     document.querySelector(".theme-toggle").addEventListener("click", function () {
       var next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
       document.documentElement.dataset.theme = next;
