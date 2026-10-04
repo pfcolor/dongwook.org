@@ -1,0 +1,8 @@
+---
+title: 무슬림형제단에 이슬람 혐오 덧씌우기
+date: 2026-09-19
+---
+
+{% include link-card.html url="https://www.pado.kr/article/2026091813248817524" title="유럽은 이슬람주의로부터 어떻게 민주주의를 지킬 것인가" image="/assets/img/link-cards/pado-2026091813248817524.jpg" %}
+
+9월 10일자 이코노미스트 기사 번역. 어휴. 무슬림형제단에게 “전복을 꾀하는 세력” 이미지를 덧씌우기.
