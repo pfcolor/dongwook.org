@@ -28,6 +28,7 @@ defaults:
       layout: post
 
 exclude:
+  - CLAUDE.md
   - Gemfile
   - Gemfile.lock
   - vendor
