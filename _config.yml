@@ -26,7 +26,11 @@ defaults:
   - scope:
       path: ""
     values:
-      image: /assets/img/og.png
+      image:
+        path: /assets/img/og.png
+        width: 1200
+        height: 630
+        alt: "dongwook — odds and ends. written down."
   - scope:
       path: ""
       type: posts
