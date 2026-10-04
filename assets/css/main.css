@@ -218,6 +218,13 @@ blockquote > :last-child {
   content: "−";
 }
 
+.content summary .date {
+  float: right;
+  margin: 0.15rem 0 0 0.8rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
 .content summary .by {
   display: block;
   margin-left: 1.2rem;
