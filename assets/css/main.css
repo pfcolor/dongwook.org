@@ -231,6 +231,7 @@ blockquote > :last-child {
 
 .content details .source {
   margin: 0 0 1.2rem;
+  text-align: right;
   color: var(--muted);
   font-size: 0.9rem;
 }
