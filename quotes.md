@@ -5,6 +5,8 @@ permalink: /quotes/
 subtitle: underlined. then copied out.
 ---
 
+<div class="quotes-head"><span>title</span><span>added</span></div>
+
 <details markdown="1">
 <summary><span class="date">2026-07-28</span>“팔레스타인은 죽어서도 인간성을 증명해야 한다”…‘완벽한 피해자’ 저자의 일침 <span class="by">모하메드 엘쿠르드</span></summary>
 
