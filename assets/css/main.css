@@ -188,18 +188,54 @@ blockquote > :last-child {
   margin-bottom: 0;
 }
 
-/* quotes: 출처는 인용문에 붙이고, 인용과 인용 사이는 넓게 */
-.content blockquote:has(+ .source) {
-  margin-bottom: 0.5rem;
+/* quotes: 한 줄(출처)로 접어 두고, 누르면 인용문을 펼친다 */
+.content details {
+  border-bottom: 1px solid var(--border);
 }
 
-.content .source {
-  margin: 0 0 3.5rem;
+.content details:first-of-type {
+  border-top: 1px solid var(--border);
+}
+
+.content summary {
+  padding: 0.7rem 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.content summary::-webkit-details-marker {
+  display: none;
+}
+
+.content summary::before {
+  content: "+";
+  display: inline-block;
+  width: 1.2rem;
+  color: var(--muted);
+}
+
+.content details[open] > summary::before {
+  content: "−";
+}
+
+.content summary .by {
+  display: block;
+  margin-left: 1.2rem;
   color: var(--muted);
   font-size: 0.9rem;
 }
 
-.content .source a {
+.content details blockquote {
+  margin: 0.3rem 0 0.5rem;
+}
+
+.content details .source {
+  margin: 0 0 1.2rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.content details .source a {
   color: var(--muted);
 }
 
