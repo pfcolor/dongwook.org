@@ -305,3 +305,63 @@ mark {
   color: var(--text);
 }
 
+
+/* 링크 카드: 왼쪽 작은 썸네일 + 오른쪽 글 */
+.link-card {
+  display: flex;
+  align-items: stretch;
+  margin: 1.25rem 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.link-card:hover {
+  border-color: var(--muted);
+}
+
+.link-card img {
+  flex: none;
+  width: 6rem;
+  object-fit: cover;
+  border-right: 1px solid var(--border);
+}
+
+.link-card-body {
+  display: block;
+  min-width: 0;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.link-card-site {
+  display: block;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.link-card-title {
+  display: -webkit-box;
+  overflow: hidden;
+  font-weight: 700;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.link-card-desc {
+  display: block;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.82rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 30rem) {
+  .link-card img {
+    width: 4.5rem;
+  }
+}

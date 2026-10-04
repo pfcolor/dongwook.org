@@ -1,0 +1,14 @@
+{%- comment -%}
+  링크 카드 (페이스북 스타일). 사용법:
+  {% include link-card.html url="..." title="..." description="..." image="..." %}
+  site는 url에서 자동 추출, description과 image는 생략 가능.
+{%- endcomment -%}
+{%- assign host = include.url | split: "/" | slice: 2, 1 | first | remove: "www." -%}
+<a class="link-card" href="{{ include.url }}">
+  {%- if include.image %}<img src="{{ include.image | relative_url }}" alt="" loading="lazy">{% endif %}
+  <span class="link-card-body">
+    <span class="link-card-site">{{ host }}</span>
+    <span class="link-card-title">{{ include.title }}</span>
+    {%- if include.description %}<span class="link-card-desc">{{ include.description }}</span>{% endif %}
+  </span>
+</a>
