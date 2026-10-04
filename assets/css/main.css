@@ -45,8 +45,7 @@ a {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem 1.5rem;
+  gap: 0.5rem 1rem;
   margin-bottom: 3rem;
 }
 
@@ -57,8 +56,22 @@ a {
 
 .site-header nav {
   display: flex;
-  align-items: baseline;
   gap: 1rem;
+  margin-left: auto;
+}
+
+/* 좁은 화면: 첫 줄에 이름과 토글, 둘째 줄에 메뉴 */
+@media (max-width: 520px) {
+  .site-header nav {
+    order: 3;
+    flex-basis: 100%;
+    gap: 0.9rem;
+    margin-left: 0;
+  }
+
+  .theme-toggle {
+    margin-left: auto;
+  }
 }
 
 .site-header nav a {
@@ -235,3 +248,60 @@ pre code {
 .post-nav a:hover {
   color: var(--text);
 }
+
+/* 검색 */
+.search-input {
+  width: 100%;
+  margin-bottom: 2rem;
+  padding: 0.4rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search-input:focus {
+  border-bottom-color: var(--muted);
+}
+
+.search-results li {
+  margin-bottom: 1rem;
+}
+
+.search-snippet,
+.search-empty {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+mark {
+  background: var(--code-bg);
+  color: var(--text);
+}
+
+/* 하단: 구분선 + 카피라이트 + rss */
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.site-footer a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--text);
+}
+

@@ -24,15 +24,20 @@
     <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
     <nav>
       {%- for item in site.data.navigation %}
-        <a href="{{ item.url | relative_url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.title }}</a>
+        <a href="{{ item.url | relative_url }}"{% if page.url == item.url or item.url == "/" and page.collection == "posts" %} aria-current="page"{% endif %}>{{ item.title }}</a>
       {%- endfor %}
-      <button class="theme-toggle" type="button" aria-label="라이트/다크 전환"></button>
     </nav>
+    <button class="theme-toggle" type="button" aria-label="라이트/다크 전환"></button>
   </header>
 
   <main>
     {{ content }}
   </main>
+
+  <footer class="site-footer">
+    <span>&copy; {{ site.time | date: "%Y" }} {{ site.title }}</span>
+    <a href="{{ '/atom.xml' | relative_url }}">rss</a>
+  </footer>
 
   <script>
     /* 직접 고른 적이 없으면 폰/OS의 라이트·다크 설정 변화를 그대로 따라간다 */

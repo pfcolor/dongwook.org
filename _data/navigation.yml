@@ -1,10 +1,12 @@
 # 상단 메뉴 (소문자로 짧게)
 
+- title: notes
+  url: /
 - title: books
   url: /books/
 - title: listening
   url: /listening/
 - title: quotes
   url: /quotes/
-- title: rss
-  url: /atom.xml
+- title: search
+  url: /search/
