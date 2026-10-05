@@ -151,3 +151,43 @@ subtitle: underlined. then copied out.
 [lithub.com](https://lithub.com/on-the-rise-of-chatgpt-and-the-industrialization-of-the-post-meaning-world/)
 {: .source}
 </details>
+
+<details markdown="1">
+<summary><span class="date">2010-01-01</span>인간의 얼굴을 한 자본주의에 대하여 <span class="by">로쟈</span></summary>
+
+> 한마디로 말해서, 자본주의가 돌아가는 기본 원료는 봉사료/접대료이다(그래서 ‘봉사비/접대비’가 된다). “난 네가 돈을 주는 일이라면 뭐든지 할 수 있어!”가 자본주의의 캐치프레이즈다.
+>
+> (중략)
+>
+> 자본주의의 기본 원료가 봉사/접대인 한에서, ‘접대 없는 자본주의’란 말은 ‘인간적인 자본주의’만큼이나 모순형용이다. 혹은 (지젝이 즐겨 인용하는) ‘카페인 없는 커피’나 ‘섹스 없는 섹스’ ‘아편 없는 아편’ 정도쯤 될까?
+>
+> (중략)
+>
+> 반면에, 성매매/성접대에 반대함으로써 ‘접대 없는 자본주의’를 희구하는 태도는 ‘인간적인 자본주의’, 혹은 ‘인간의 얼굴을 한 자본주의’의 가능성을 용인하는 태도이다(‘인간의 얼굴을 한 사회주의’가 불가능한 만큼만 ‘인간의 얼굴을 한 자본주의’도 딱 불가능하다). 그것이 소위 개량주의적/타협적 태도이며, ‘카페인 없는 커피’처럼 ‘무해한 자본주의’(적어도 ‘덜 유해한 자본주의’)를 우리가 가질 수 있다고 믿는 태도이다.
+
+[blog.aladin.co.kr](https://blog.aladin.co.kr/mramor/3306679)
+{: .source}
+</details>
+
+<details markdown="1">
+<summary><span class="date">2009-02-12</span>“When they do it, it’s a crime. When we do it, it’s not” <span class="by">Noam Chomsky</span></summary>
+
+> That’s not the way things work. If you want to make changes in the world, you’re going to have to be there day after day doing the boring, straightforward work of getting a couple of people interested and building a slightly bigger organization and carrying out the next move and suffering frustration and finally getting somewhere. That’s how the world changes.
+
+[chomsky.info](https://chomsky.info/200405__/)
+{: .source}
+</details>
+
+<details markdown="1">
+<summary><span class="date">2008-02-20</span>『9월이여, 오라』 <span class="by">아룬다티 로이</span></summary>
+
+> 최근에, 미국 정부의 행동을 비판해온 사람들은 — 나 자신을 포함해서 — ‘반미적’이라고 불리고 있습니다. ‘반미주의’가 하나의 이데올로기로 신성화되고 있습니다.
+>
+> ‘반미적’이란 용어는 일반적으로 미국의 기성 체제가 비판자들을 깎아내리고, 그들의 정체를 밝히기 위해 — 틀린 것은 아니지만 부정확하게 — 사용하는 말입니다. 일단 누군가가 반미적이라는 낙인이 찍히면, 그의 발언은 들어보지도 않고 무시되며, 논리는 상처받은 국가적 자존심의 소용돌이 속에 사라져버립니다.
+>
+> 그러나, ‘반미적’이라는 용어는 무슨 뜻입니까? 재즈에 반대한다는 뜻인가요? 아니면, 언론자유에 반대한다는 뜻입니까? 토니 모리슨이나 존 업다이크를 좋아하지 않는다는 뜻인가요? 거대한 미국산 삼나무를 싫어한다는 것인가요? 핵무기에 반대하여 행진한 수십만 미국 시민들이나, 그들의 정부가 베트남으로부터 철수하도록 압력을 넣은 수많은 반전 운동가들을 존경하지 않는다는 것을 의미합니까? ‘반미적’이란 모든 미국인들을 미워한다는 뜻인가요?
+>
+> (중략)
+>
+> 누군가를 ‘반미적’이라고(또는 ‘반인도적’이라고) 부르는 것은 단순한 인종주의적인 발언이 아닙니다. 그것은 상상력의 결핍입니다. 기성 체제가 제시해준 것 이외의 관점에서 세계를 볼 수 없는 무능력입니다. 부시가 아니면 탈레반이다. 우리를 사랑하지 않는다면 우리를 미워하고 있는 것이다. 천사가 아니면 악마다. 우리와 함께 있지 않으면 테러리스트들과 한패다. 이런 식입니다.
+</details>
