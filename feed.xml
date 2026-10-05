@@ -1,0 +1,24 @@
+---
+layout: null
+sitemap: false
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>{{ site.title | xml_escape }}</title>
+    <link>{{ site.url }}/</link>
+    <description>{{ site.description | xml_escape }}</description>
+    <language>ko</language>
+    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
+{%- for post in site.posts limit: 30 %}
+    <item>
+      <title>{{ post.title | xml_escape }}</title>
+      <link>{{ post.url | absolute_url }}</link>
+      <description><![CDATA[{{ post.content }}]]></description>
+      <author>{{ site.author.name }}</author>
+      <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
+      <guid isPermaLink="true">{{ post.url | absolute_url }}</guid>
+    </item>
+{%- endfor %}
+  </channel>
+</rss>
