@@ -5,6 +5,8 @@ twitter:
 url: "https://dongwook.org"
 baseurl: ""
 lang: ko
+author:
+  name: dongwook
 timezone: Asia/Seoul
 
 markdown: kramdown
