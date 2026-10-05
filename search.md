@@ -32,6 +32,16 @@ subtitle: somewhere in here. probably.
         escape(text.slice(i + term.length, end)) + (end < text.length ? "…" : "");
     }
 
+    /* 입력이 멈춘 뒤 한 번만 검색어와 결과 수를 보낸다 */
+    var searchTimer;
+    function trackSearch(term, count) {
+      clearTimeout(searchTimer);
+      if (!term) return;
+      searchTimer = setTimeout(function () {
+        track("search", { search_term: term, result_count: count });
+      }, 1200);
+    }
+
     function render() {
       var query = input.value.trim().toLowerCase();
       var url = new URL(location.href);
@@ -39,12 +49,13 @@ subtitle: somewhere in here. probably.
       history.replaceState(null, "", url);
 
       list.innerHTML = "";
-      if (!query) return;
+      if (!query) { trackSearch(""); return; }
       var terms = query.split(/\s+/);
       var hits = docs.filter(function (d) {
         var hay = (d.title + " " + d.content).toLowerCase();
         return terms.every(function (t) { return hay.indexOf(t) >= 0; });
       });
+      trackSearch(query, hits.length);
       if (!hits.length) {
         list.innerHTML = '<li class="search-empty">no results.</li>';
         return;

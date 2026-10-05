@@ -22,6 +22,12 @@
     gtag("config", "{{ site.google_analytics }}");
   </script>
   {%- endif %}
+  <script>
+    /* Google Analytics 이벤트. gtag가 없으면(로컬 미리보기, 차단 등) 조용히 넘어간다 */
+    function track(name, params) {
+      if (typeof gtag === "function") gtag("event", name, params || {});
+    }
+  </script>
   {% feed_meta %}
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -60,6 +66,29 @@
       try { saved = localStorage.getItem("theme"); } catch (err) {}
       if (!saved) document.documentElement.dataset.theme = e.matches ? "dark" : "light";
     });
+
+    /* data-track="이벤트명"이 붙은 요소를 누르면(가운데 버튼 포함) 이벤트를 보낸다. 나머지 data-*는 파라미터 */
+    function trackClick(e) {
+      if (e.type === "auxclick" && e.button !== 1) return;
+      var el = e.target.closest("[data-track]");
+      if (!el) return;
+      var params = {};
+      for (var key in el.dataset) if (key !== "track") params[key] = el.dataset[key];
+      track(el.dataset.track, params);
+    }
+    document.addEventListener("click", trackClick);
+    document.addEventListener("auxclick", trackClick);
+
+    /* quotes에서 인용을 펼칠 때 출처 제목을 보낸다 (toggle은 버블링하지 않아 캡처로 받는다) */
+    document.addEventListener("toggle", function (e) {
+      var d = e.target;
+      if (d.tagName !== "DETAILS" || !d.open) return;
+      var summary = d.querySelector("summary");
+      if (!summary) return;
+      var clone = summary.cloneNode(true);
+      clone.querySelectorAll(".date, .by").forEach(function (n) { n.remove(); });
+      track("quote_open", { item: clone.textContent.trim() });
+    }, true);
 
     document.querySelector(".theme-toggle").addEventListener("click", function () {
       var next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";

@@ -4,7 +4,7 @@
   site는 url에서 자동 추출, description과 image는 생략 가능.
 {%- endcomment -%}
 {%- assign host = include.url | split: "/" | slice: 2, 1 | first | remove: "www." -%}
-<a class="link-card" href="{{ include.url }}">
+<a class="link-card" href="{{ include.url }}" data-track="link_card_click" data-item="{{ include.title | escape }}" data-domain="{{ host }}" data-post="{{ page.title | escape }}">
   {%- if include.image %}<img src="{{ include.image | relative_url }}" alt="" loading="lazy">{% endif %}
   <span class="link-card-body">
     <span class="link-card-site">{{ host }}</span>
