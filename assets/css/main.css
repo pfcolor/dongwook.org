@@ -28,7 +28,7 @@ body {
   padding: 2.5rem 1rem 4rem;
   background: var(--bg);
   color: var(--text);
-  font-family: "Noto Sans KR", system-ui, sans-serif;
+  font-family: "IBM Plex Sans KR", system-ui, sans-serif;
   font-size: 17px;
   line-height: 1.75;
   word-break: keep-all;
@@ -39,6 +39,16 @@ a {
   color: var(--link);
   text-underline-offset: 0.2em;
 }
+
+/* 영문 고정폭: 머리글, 메뉴, 부제, 날짜, 푸터 */
+.mono {
+  font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  word-break: normal;
+}
+
+/* 제목 속 《》「」〈〉는 한쪽이 비어 있어 제목 줄이 들쭉날쭉해 보이므로 빈 쪽을 접는다 */
+.bo { margin-left: -0.5em; }
+.bc { margin-right: -0.5em; }
 
 /* 머리글: 사이트 이름 + 소문자 메뉴 + 테마 토글 */
 .site-header {
@@ -65,8 +75,9 @@ a {
   .site-header nav {
     order: 3;
     flex-basis: 100%;
-    gap: 0.9rem;
+    gap: 0.8rem;
     margin-left: 0;
+    font-size: 0.85rem;
   }
 
   .theme-toggle {
@@ -117,13 +128,45 @@ a {
 }
 
 .post-list time,
-.date {
+.date,
+.dash {
   color: var(--muted);
-  font-variant-numeric: tabular-nums;
+}
+
+.post-list time,
+.dash {
+  font-size: 0.9em;
+}
+
+.dash {
+  margin: 0 0.15em;
 }
 
 .post-list a {
   text-decoration: none;
+}
+
+/* 홈 목록: 한 줄에 날짜 — 제목, 길면 제목 끝을 …로 줄인다 */
+.archive li {
+  display: flex;
+  align-items: baseline;
+  gap: 0 0.5em;
+}
+
+.archive time,
+.archive .dash {
+  flex: none;
+}
+
+.archive .dash {
+  margin: 0;
+}
+
+.archive a {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .post-list a:hover {

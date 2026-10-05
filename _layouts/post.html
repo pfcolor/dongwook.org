@@ -3,8 +3,8 @@ layout: default
 ---
 
 <article>
-  <h1>{{ page.title }}</h1>
-  <time class="date" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>
+  <h1>{% include title.html text=page.title %}</h1>
+  <time class="date mono" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>
   <div class="content">
     {{ content }}
   </div>
@@ -12,7 +12,7 @@ layout: default
 
 {% if page.previous or page.next %}
   <nav class="post-nav">
-    {% if page.previous %}<a href="{{ page.previous.url | relative_url }}">&larr; {{ page.previous.title }}</a>{% else %}<span></span>{% endif %}
-    {% if page.next %}<a href="{{ page.next.url | relative_url }}">{{ page.next.title }} &rarr;</a>{% endif %}
+    {% if page.previous %}<a href="{{ page.previous.url | relative_url }}">&larr; {% include title.html text=page.previous.title %}</a>{% else %}<span></span>{% endif %}
+    {% if page.next %}<a href="{{ page.next.url | relative_url }}">{% include title.html text=page.next.title %} &rarr;</a>{% endif %}
   </nav>
 {% endif %}

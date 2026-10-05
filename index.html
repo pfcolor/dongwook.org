@@ -2,13 +2,15 @@
 layout: default
 ---
 
-<h1>notes</h1>
-<p class="subtitle">{{ site.description }}</p>
+<h1 class="mono">notes</h1>
+<p class="subtitle mono">{{ site.description }}</p>
 
-<ul class="post-list">
+<ul class="post-list archive">
   {%- for post in site.posts %}
     <li>
-      <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time> — <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      <time class="mono" datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
+      <span class="dash mono">—</span>
+      <a href="{{ post.url | relative_url }}">{% include title.html text=post.title %}</a>
     </li>
   {%- endfor %}
 </ul>

@@ -36,13 +36,13 @@
   <meta name="theme-color" content="#161616" media="(prefers-color-scheme: dark)">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;700&display=swap">
   <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 </head>
 <body>
   <header class="site-header">
-    <span class="site-title">{{ site.title }}</span>
-    <nav>
+    <span class="site-title mono">{{ site.title }}</span>
+    <nav class="mono">
       {%- for item in site.data.navigation %}
         <a href="{{ item.url | relative_url }}"{% if page.url == item.url or item.url == "/" and page.collection == "posts" %} aria-current="page"{% endif %}>{{ item.title }}</a>
       {%- endfor %}
@@ -54,7 +54,7 @@
     {{ content }}
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer mono">
     <span>&copy; {{ site.title }}</span>
     <a href="{{ '/atom.xml' | relative_url }}">rss</a>
   </footer>

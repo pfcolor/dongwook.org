@@ -21,6 +21,13 @@ subtitle: somewhere in here. probably.
       });
     }
 
+    /* 제목 속 《》「」〈〉의 빈 여백을 줄인다 (_includes/title.html과 같은 규칙) */
+    function bracketed(s) {
+      return escape(s)
+        .replace(/[《「〈]/g, '<span class="bo">$&</span>')
+        .replace(/[》」〉]/g, '<span class="bc">$&</span>');
+    }
+
     /* 처음 일치한 곳 앞뒤로 조금 잘라 보여준다 */
     function snippet(text, term) {
       var i = text.toLowerCase().indexOf(term);
@@ -61,8 +68,8 @@ subtitle: somewhere in here. probably.
         return;
       }
       list.innerHTML = hits.map(function (d) {
-        var head = (d.date ? '<time>' + d.date + '</time> — ' : '') +
-          '<a href="' + d.url + '">' + escape(d.title) + '</a>';
+        var head = (d.date ? '<time class="mono">' + d.date + '</time> <span class="dash mono">—</span> ' : '') +
+          '<a href="' + d.url + '">' + bracketed(d.title) + '</a>';
         var snip = snippet(d.content, terms[0]);
         return '<li>' + head + (snip ? '<div class="search-snippet">' + snip + '</div>' : '') + '</li>';
       }).join("");
