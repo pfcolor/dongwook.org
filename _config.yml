@@ -9,6 +9,14 @@ author:
   name: dongwook
 timezone: Asia/Seoul
 
+# Google Search Console 소유권 확인 토큰(HTML 태그 방식의 content 값).
+# 값을 받으면 아래 두 줄의 주석을 풀고 채운다. 비워 둔 채 켜면 빈 meta가 출력된다.
+# webmaster_verifications:
+#   google: ""
+
+# Google Analytics 측정 ID(G-XXXXXXXXXX). 비워 두면 출력하지 않는다(production 빌드에서만 켜짐).
+google_analytics: ""
+
 markdown: kramdown
 kramdown:
   input: GFM
@@ -33,6 +41,10 @@ defaults:
         width: 1200
         height: 630
         alt: "dongwook — odds and ends. written down."
+  - scope:
+      path: "naverf71e13f8fcbc7a0f3a308e2beee64862.html"
+    values:
+      sitemap: false
   - scope:
       path: ""
       type: posts
