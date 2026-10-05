@@ -17,6 +17,15 @@ subtitle: underlined. then copied out.
 </details>
 
 <details markdown="1">
+<summary><span class="date">2026-09-29</span>Literacy Is Another Casualty of the Decline of Democracy <span class="by">John Livesey</span></summary>
+
+> What is at stake is the existence of the mass culture, a unique historical development that came into existence only within the last hundred years, when working class people, women, and non-Westerners shaped global politics collectively for the first time. From the Nobel Prize–winning poetry of Rabindranath Tagore to the revolutions that humiliated European imperialism in nations as distinct as Algeria and China, the culture to which mass literacy gave rise was always a by-product of the struggle for, and achievements of, mass democracy. It was and remains the only successful challenge to Western chauvinism and the navel-gazing court culture that has flourished everywhere in the absence of inspiration from the popular classes. Without a renewal of the fight for democracy, we are unlikely to see a return to the culture of informed engagement with the world. If this happens, the end of literacy may be the least of our worries.
+
+[jacobin.com](https://jacobin.com/2026/09/review-marriott-literacy-culture-screens)
+{: .source}
+</details>
+
+<details markdown="1">
 <summary><span class="date">2026-09-15</span>마인크래프트에 들어간 ‘디지털 초파리’…다음은 쥐·인간의 뇌일까 <span class="by">정용인</span></summary>
 
 > 커넥톰은 뇌의 전부가 아니기 때문이다. 전자현미경으로 확인한 신경세포의 배선만으로는 뉴런 각각의 전기적 성질과 신경전달물질·수용체, 신경조절물질, 호르몬, 간극연접, 시냅스 가소성, 시간에 따라 변하는 내부 상태를 모두 알 수 없다. HHMI 재넬리아 역시 커넥톰을 신경계 이해에 ‘필수적이지만 충분하지 않은’ 배선도라고 규정한다. 완전한 초파리 행동을 재현하는 시뮬레이터에는 이런 생리 정보와 몸의 역학까지 더해져야 한다.
