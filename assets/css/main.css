@@ -64,7 +64,7 @@ a {
 .site-header {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   gap: 0.5rem 1rem;
   margin-bottom: 3rem;
 }
@@ -77,7 +77,7 @@ a {
 /* 메뉴와 토글은 한 덩어리로 줄바꿈해, 토글만 따로 떨어지는 폭이 없게 한다 */
 .site-menu {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 1rem;
   margin-left: auto;
 }
