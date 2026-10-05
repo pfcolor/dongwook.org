@@ -264,7 +264,8 @@ blockquote > :last-child {
 }
 
 .content summary {
-  padding: 0.7rem 0;
+  position: relative;
+  padding: 0.7rem 0 0.7rem 1.2rem;
   cursor: pointer;
   list-style: none;
 }
@@ -275,8 +276,8 @@ blockquote > :last-child {
 
 .content summary::before {
   content: "+";
-  display: inline-block;
-  width: 1.2rem;
+  position: absolute;
+  left: 0;
   color: var(--muted);
 }
 
@@ -291,9 +292,19 @@ blockquote > :last-child {
   font-size: 0.85rem;
 }
 
+/* 좁은 화면: 날짜를 제목 옆에서 빼 둘째 줄(글쓴이 줄) 오른쪽 끝으로 내려, 제목이 전체 폭을 쓰게 한다 */
+@media (max-width: 520px) {
+  .content summary .date {
+    position: absolute;
+    right: 0;
+    bottom: 0.7rem;
+    float: none;
+    margin: 0;
+  }
+}
+
 .content summary .by {
   display: block;
-  margin-left: 1.2rem;
   color: var(--muted);
   font-size: 0.9rem;
 }
