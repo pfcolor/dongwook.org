@@ -42,12 +42,14 @@
 <body>
   <header class="site-header">
     <span class="site-title mono">{{ site.title }}</span>
+    <div class="site-menu">
     <nav class="mono">
       {%- for item in site.data.navigation %}
         <a href="{{ item.url | relative_url }}"{% if page.url == item.url or item.url == "/" and page.collection == "posts" %} aria-current="page"{% endif %}>{{ item.title }}</a>
       {%- endfor %}
     </nav>
     <button class="theme-toggle" type="button" aria-label="라이트/다크 전환"></button>
+    </div>
   </header>
 
   <main>

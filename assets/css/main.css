@@ -74,14 +74,25 @@ a {
   text-decoration: none;
 }
 
-.site-header nav {
+/* 메뉴와 토글은 한 덩어리로 줄바꿈해, 토글만 따로 떨어지는 폭이 없게 한다 */
+.site-menu {
   display: flex;
+  align-items: baseline;
   gap: 1rem;
   margin-left: auto;
 }
 
-/* 좁은 화면: 첫 줄에 이름과 토글, 둘째 줄에 메뉴 */
-@media (max-width: 520px) {
+.site-header nav {
+  display: flex;
+  gap: 1rem;
+}
+
+/* 좁은 화면: 덩어리를 풀어 첫 줄에 이름과 토글, 둘째 줄에 메뉴. 한 줄에 다 들어가는 폭(약 540px)보다 조금 넉넉히 잡아, 덩어리째 둘째 줄로 내려가는 어중간한 배치가 생기지 않게 한다 */
+@media (max-width: 600px) {
+  .site-menu {
+    display: contents;
+  }
+
   .site-header nav {
     order: 3;
     flex-basis: 100%;
