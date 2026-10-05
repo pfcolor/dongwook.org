@@ -7,6 +7,7 @@ module BracketTrim
   CLOSE = /[》」〉』]/
   START = '<div class="content">'
   STOP = '</article>'
+  WJ = "\u2060" # 여는 부호 뒤 줄바꿈 금지 (iOS Safari keep-all에서 부호만 줄 끝에 남는 것을 막는다)
 
   def self.wrap(html)
     skip = 0
@@ -18,7 +19,7 @@ module BracketTrim
       elsif skip > 0
         part
       else
-        part.gsub(OPEN) { |c| %(<span class="bo">#{c}</span>) }
+        part.gsub(OPEN) { |c| %(<span class="bo">#{c}</span>#{WJ}) }
             .gsub(CLOSE) { |c| %(<span class="bc">#{c}</span>) }
       end
     end.join

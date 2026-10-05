@@ -21,11 +21,11 @@ subtitle: somewhere in here. probably.
       });
     }
 
-    /* 제목 속 《》「」〈〉의 빈 여백을 줄인다 (_includes/title.html과 같은 규칙) */
+    /* 제목 속 《》「」〈〉『』의 빈 여백을 줄인다 (_includes/title.html과 같은 규칙) */
     function bracketed(s) {
       return escape(s)
-        .replace(/[《「〈]/g, '<span class="bo">$&</span>')
-        .replace(/[》」〉]/g, '<span class="bc">$&</span>');
+        .replace(/[《「〈『]/g, '<span class="bo">$&</span>\u2060')
+        .replace(/[》」〉』]/g, '<span class="bc">$&</span>');
     }
 
     /* 처음 일치한 곳 앞뒤로 조금 잘라 보여준다 */

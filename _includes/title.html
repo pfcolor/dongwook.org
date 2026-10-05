@@ -1,6 +1,6 @@
 {%- comment -%} 제목 속 《》「」〈〉『』의 빈 여백을 줄이려고 부호를 span으로 감싼다 (CSS .bo/.bc) {%- endcomment -%}
 {{- include.text | escape
-  | replace: "《", '<span class="bo">《</span>' | replace: "》", '<span class="bc">》</span>'
-  | replace: "「", '<span class="bo">「</span>' | replace: "」", '<span class="bc">」</span>'
-  | replace: "〈", '<span class="bo">〈</span>' | replace: "〉", '<span class="bc">〉</span>'
-  | replace: "『", '<span class="bo">『</span>' | replace: "』", '<span class="bc">』</span>' -}}
+  | replace: "《", '<span class="bo">《</span>⁠' | replace: "》", '<span class="bc">》</span>'
+  | replace: "「", '<span class="bo">「</span>⁠' | replace: "」", '<span class="bc">」</span>'
+  | replace: "〈", '<span class="bo">〈</span>⁠' | replace: "〉", '<span class="bc">〉</span>'
+  | replace: "『", '<span class="bo">『</span>⁠' | replace: "』", '<span class="bc">』</span>' -}}
