@@ -42,7 +42,17 @@ a {
 
 /* 영문 고정폭: 머리글, 메뉴, 부제, 날짜, 푸터 */
 .mono {
-  font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  font-family: "JetBrains Mono", "IBM Plex Sans", "IBM Plex Sans KR", ui-monospace, "SF Mono", Menlo, monospace;
+  word-break: normal;
+}
+
+/* 페이지(books, listening, quotes 등)의 소제목과 quotes의 열 이름·날짜도 영문 고정폭 */
+.page .content h2,
+.page .content h3,
+.page .content h4,
+.quotes-head,
+.content summary .date {
+  font-family: "JetBrains Mono", "IBM Plex Sans", "IBM Plex Sans KR", ui-monospace, "SF Mono", Menlo, monospace;
   word-break: normal;
 }
 
@@ -203,6 +213,11 @@ h1 {
 .content h3 { font-size: 1.15rem; }
 .content h4 { font-size: 1rem; }
 
+/* 페이지의 소제목은 고정폭이라 같은 크기에서도 커 보이므로 줄인다 */
+.page .content h2 { font-size: 1.05rem; }
+.page .content h3 { font-size: 1rem; }
+.page .content h4 { font-size: 0.95rem; }
+
 .content p,
 .content ul,
 .content ol {
@@ -289,6 +304,8 @@ blockquote > :last-child {
 
 .content details .source {
   margin: 0 0 1.2rem;
+  font-family: "JetBrains Mono", "IBM Plex Sans", "IBM Plex Sans KR", ui-monospace, "SF Mono", Menlo, monospace;
+  word-break: normal;
   text-align: right;
   color: var(--muted);
   font-size: 0.9rem;
