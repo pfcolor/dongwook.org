@@ -135,6 +135,15 @@ subtitle: underlined. then copied out.
 </details>
 
 <details markdown="1">
+<summary><span class="date">2025-12-13</span>How do we stop hating the people we disagree with? <span class="by">Nauman Asghar</span></summary>
+
+> The optimism underlying Dolan’s approach underestimates the extent to which affective responses may be rooted in ideological disagreements that have widened by social media algorithms, income inequality, and elite polarisation.
+
+[blogs.lse.ac.uk](https://blogs.lse.ac.uk/lsereviewofbooks/2025/11/25/polarisation-book-review-beliefism-how-to-stop-hating-the-people-we-disagree-with-paul-dolan/)
+{: .source}
+</details>
+
+<details markdown="1">
 <summary><span class="date">2025-12-13</span>Progressive Except for Palestine: On Growing Up in Bari Weiss’s “Urban Shtetl” <span class="by">Laura Kraftowitz</span></summary>
 
 > The time for our people to wake up is decades past. For those who tried, we’ve failed to wake them, and maybe we never could. Now Bari Weiss is ascending to the top of network news, and the moral high ground once bestowed on us through unspeakable suffering lies under Gaza’s rubble and mass graves. As Weiss’s favorite professor Joseph Massad put it, “Palestinians are the Jews’ Jews.”
