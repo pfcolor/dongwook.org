@@ -1,7 +1,7 @@
 # 본문의 《》「」〈〉는 한쪽이 비어 있어 글자 사이가 벌어져 보이므로,
 # 부호를 span(.bo 여는 쪽, .bc 닫는 쪽)으로 감싸 CSS로 빈 쪽을 접는다.
 # 레이아웃이 입혀진 최종 HTML에서 본문(<div class="content"> ~ </article>)의 글자에만 적용한다.
-# RSS 등 다른 출력에는 영향이 없다. 코드(<pre>, <code>) 안은 건드리지 않는다.
+# RSS 등 다른 출력에는 영향이 없다. 코드(<pre>, <code>)와 <script> 안은 건드리지 않는다.
 module BracketTrim
   OPEN = /[《「〈]/
   CLOSE = /[》」〉]/
@@ -12,8 +12,8 @@ module BracketTrim
     skip = 0
     html.split(/(<[^>]+>)/).map do |part|
       if part.start_with?("<")
-        skip += 1 if part =~ /\A<(pre|code)[\s>]/
-        skip -= 1 if part =~ /\A<\/(pre|code)>/
+        skip += 1 if part =~ /\A<(pre|code|script)[\s>]/
+        skip -= 1 if part =~ /\A<\/(pre|code|script)>/
         part
       elsif skip > 0
         part
