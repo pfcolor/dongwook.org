@@ -15,7 +15,7 @@ timezone: Asia/Seoul
 #   google: ""
 
 # Google Analytics 측정 ID(G-XXXXXXXXXX). 비워 두면 출력하지 않는다(production 빌드에서만 켜짐).
-google_analytics: ""
+google_analytics: "G-ZM7YWXMLYR"
 
 markdown: kramdown
 kramdown:
