@@ -46,7 +46,7 @@ a {
   word-break: normal;
 }
 
-/* 페이지(books, listening, quotes 등)의 소제목과 quotes의 열 이름·날짜도 영문 고정폭 */
+/* 페이지(books, quotes 등)의 소제목과 quotes의 열 이름·날짜도 영문 고정폭 */
 .page .content h2,
 .page .content h3,
 .page .content h4,
