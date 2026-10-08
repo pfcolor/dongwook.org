@@ -20,6 +20,10 @@ google_analytics: "G-ZM7YWXMLYR"
 # quotes 한 쪽에 보여 줄 인용 수(_plugins/quotes-pagination.rb). 넘으면 /quotes/page/N/으로 나뉜다.
 quotes_per_page: 30
 
+# photos 한 쪽에 보여 줄 사진 수(_plugins/photos-pagination.rb). 마지막 쪽에 photos_orphan_max장 이하만 남으면 앞 쪽에 합친다.
+photos_per_page: 30
+photos_orphan_max: 3
+
 markdown: kramdown
 kramdown:
   input: GFM

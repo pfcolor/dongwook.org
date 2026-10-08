@@ -528,3 +528,93 @@ mark {
 .pager [aria-current] {
   color: var(--text);
 }
+
+/* photos: 세로 사진이 많아 4:5로 잘라 격자로 보여 주고, 누르면 팝업으로 원본 비율로 연다 */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.photo-grid a {
+  display: block;
+}
+
+.photo-grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: var(--code-bg);
+}
+
+.photo-viewer {
+  max-width: min(36rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  margin: auto;
+  padding: 0.75rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.photo-viewer::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.photo-viewer[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.photo-viewer img {
+  display: block;
+  min-height: 0;
+  max-width: 100%;
+  max-height: calc(100vh - 7rem);
+  margin: 0 auto;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.photo-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 0.6rem 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.photo-meta .photo-date {
+  margin: 0;
+}
+
+.photo-close {
+  padding: 0 0.1rem;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-family: "IBM Plex Sans", "IBM Plex Sans KR", system-ui, sans-serif;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.photo-close:hover {
+  color: var(--text);
+}
+
+@media (max-width: 30rem) {
+  .photo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
