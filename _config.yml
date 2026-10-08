@@ -17,6 +17,9 @@ timezone: Asia/Seoul
 # Google Analytics 측정 ID(G-XXXXXXXXXX). 비워 두면 출력하지 않는다(production 빌드에서만 켜짐).
 google_analytics: "G-ZM7YWXMLYR"
 
+# quotes 한 쪽에 보여 줄 인용 수(_plugins/quotes-pagination.rb). 넘으면 /quotes/page/N/으로 나뉜다.
+quotes_per_page: 30
+
 markdown: kramdown
 kramdown:
   input: GFM

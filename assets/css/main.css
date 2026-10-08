@@ -507,3 +507,23 @@ mark {
     width: 4.5rem;
   }
 }
+
+/* quotes 쪽 이동 */
+.pager {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.pager a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.pager a:hover,
+.pager [aria-current] {
+  color: var(--text);
+}
