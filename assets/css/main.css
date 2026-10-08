@@ -452,6 +452,7 @@ mark {
 .link-card {
   display: flex;
   align-items: stretch;
+  max-width: 38rem;
   margin: 1.25rem 0;
   overflow: hidden;
   border: 1px solid var(--border);
