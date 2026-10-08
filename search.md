@@ -5,7 +5,7 @@ permalink: /search/
 subtitle: somewhere in here. probably.
 ---
 
-<input id="search-input" class="search-input" type="search" placeholder="search" aria-label="search" autocomplete="off" autofocus>
+<input id="search-input" class="search-input" type="search" placeholder="검색어를 입력해 주세요…" aria-label="search" autocomplete="off" autofocus>
 
 <ul id="search-results" class="post-list search-results"></ul>
 
