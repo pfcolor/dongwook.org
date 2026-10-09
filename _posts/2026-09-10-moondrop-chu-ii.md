@@ -1,6 +1,7 @@
 ---
 title: Moondrop Chu II, 2.5만원의 찌릿함
 date: 2026-09-10
+description: "에어팟으로만 음악을 듣는 것이 안타깝다는 글을 계기로, 2.5만 원짜리 Moondrop Chu II 이어폰을 사서 들어 본 후기."
 ---
 
 지난 주, 하박국 씨가 X에 쓴 글이 논란이 됐었다.

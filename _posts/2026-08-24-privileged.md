@@ -1,6 +1,7 @@
 ---
 title: 특권층?
 date: 2026-08-24
+description: "교사, 시간강사, 간호사 같은 사람들을 두고 왜 ‘특권층’ 젊은이들이 체제를 해체하려 하느냐고 묻는 질문에 대한 반문."
 ---
 
 {% include link-card.html url="https://x.com/atmostbeautiful/status/2091153367905255772" title="Journey (@atmostbeautiful) on X" image="/assets/img/link-cards/x-atmostbeautiful-2091153367905255772.jpg" %}

@@ -1,6 +1,7 @@
 ---
 title: 한중일, 생김새로는 구별되지 않는다
 date: 2026-05-27
+description: "한중일 사람 18명의 사진을 보고 국적을 맞히는 퀴즈에서 평균 7점이 나온다. 생김새로는 구별되지 않는다는 이야기."
 ---
 
 {% include link-card.html url="https://alllooksame.com/app/quiz.php" title="AllLookSame - China, Japan, Korea: What’s the difference?" %}

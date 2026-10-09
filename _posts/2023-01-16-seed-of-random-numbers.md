@@ -1,6 +1,7 @@
 ---
 title: 난수의 씨앗
 date: 2023-01-16
+description: "컴퓨터는 난수를 만들지 못하고 시드값에서 시작하는 수열을 낼 뿐이다. 클라우드플레어가 라바 램프로 시드를 얻는 방법이 기발하다는 감상."
 ---
 
 {% include link-card.html url="https://youtu.be/1cUUfMeOijg" title="The Lava Lamps That Help Keep The Internet Secure" image="/assets/img/link-cards/youtube-1cUUfMeOijg.jpg" %}

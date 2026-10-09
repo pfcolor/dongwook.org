@@ -1,6 +1,7 @@
 ---
 title: GMO 완전표시제, 어느 편의 이익인가
 date: 2018-05-15
+description: "GMO 완전표시제 도입을 두고, 단백질과 탄수화물·지방은 다르다는 점을 들어 입장을 고민한 글."
 ---
 
 {% include link-card.html url="http://imnews.imbc.com/replay/2018/nwdesk/article/4606931_22663.html" title="국민청원 21만 ‘GMO 완전표시제’란?" image="/assets/img/link-cards/mbc-4606931.jpg" %}

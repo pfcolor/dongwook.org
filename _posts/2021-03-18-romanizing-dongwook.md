@@ -1,6 +1,7 @@
 ---
 title: Dongwook의 로마자 표기
 date: 2021-03-18
+description: "이름 ‘동욱’은 현행 표기법으로는 Donguk, 매큔-라이샤워로는 Tonguk이다. 그런데도 Dongwook이라고 쓰는 이유."
 ---
 
 내 이름 ‘동욱’의 경우 현행 로마자 표기법으로는 ‘Donguk’, 매큔-라이샤워 표기법으로는 ‘Tonguk’으로 표기하는 것으로 알고 있다. 하지만 나는 ‘Dongwook’이라고 표기하는데….

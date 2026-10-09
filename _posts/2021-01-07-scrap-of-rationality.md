@@ -1,6 +1,7 @@
 ---
 title: 찌꺼기 같은 합리성
 date: 2021-01-07
+description: "버핏 지수와 CAPE 비율이 보여 주는 주식시장의 거품에서, 금융 순환의 건강은 생산에서 잉여가치를 만드는 데 달려 있다는 점을 생각한다."
 ---
 
 {% include link-card.html url="https://ws.or.kr/article/24988" title="신기록 속출하는 코스피: 왜 금융 시장은 실물 경제와 다른가" image="/assets/img/link-cards/wspaper-24988.jpg" %}

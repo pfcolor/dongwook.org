@@ -1,6 +1,7 @@
 ---
 title: 한국의 탈종교화는 사실상 탈불교화
 date: 2026-05-16
+description: "한국의 탈종교화는 사실상 탈불교화다. 개신교와 천주교는 신자 비율을 유지한 반면 불교만 크게 줄었다는 점과 ‘힙불’의 한계."
 ---
 
 {% include link-card.html url="https://www.koreaherald.com/article/10739053" title="Korea’s teens drift from religion, Buddhism hit hardest" %}

@@ -1,6 +1,7 @@
 ---
 title: 어디로 터질지 모르는 에너지
 date: 2025-12-13
+description: "《캐릿》의 Z세대 정신건강 기사를 읽고, 다중 위기 속에서 세대의 에너지가 정치적으로 어디로 향할지 생각한 글."
 ---
 
 {% include link-card.html url="https://www.careet.net/1790" title="20대 71.6%, 정신건강 문제를 겪고 있다고? 멘탈 관리보다 정신건강! 요즘 헬스케어 트렌드" image="/assets/img/link-cards/careet-1790.jpg" %}

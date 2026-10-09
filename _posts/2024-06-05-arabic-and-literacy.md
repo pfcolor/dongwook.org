@@ -1,6 +1,7 @@
 ---
 title: 아랍어와 문맹률
 date: 2024-06-05
+description: "아랍어가 모음을 표기하지 않는 이유와 어근 구조를, 아랍어는 일부러 읽기 어렵게 만든 것 아니냐는 지인들의 질문에 답하며 정리했다."
 ---
 
 {% include link-card.html url="https://youtu.be/IlXFOmz-wO4" title="아랍인들은 진짜 매일 초성퀴즈를 하고 살까?" image="/assets/img/link-cards/youtube-IlXFOmz-wO4.jpg" %}

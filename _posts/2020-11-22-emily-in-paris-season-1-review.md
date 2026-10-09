@@ -1,6 +1,7 @@
 ---
 title: 〈에밀리, 파리에 가다〉 시즌1 감상평
 date: 2020-11-22
+description: "〈에밀리, 파리에 가다〉 시즌1은 ‘예쁜 쓰레기’지만 재밌게 봤다. 프랑스 사회를 그리는 방식에서 눈에 띈 한 가지를 짚는다."
 ---
 
 {% include link-card.html url="https://www.netflix.com/title/81037371" title="에밀리, 파리에 가다" image="/assets/img/link-cards/netflix-81037371.jpg" %}

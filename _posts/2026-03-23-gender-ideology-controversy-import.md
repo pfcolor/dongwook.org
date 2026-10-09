@@ -1,6 +1,7 @@
 ---
 title: ‘젠더 이데올로기’ 논란 수입
 date: 2026-03-23
+description: "한국 우파가 미국·유럽 우파의 ‘젠더 이데올로기’ 논란을 수입해 일부러 논란을 만든다는 비판."
 ---
 
 {% include link-card.html url="https://www.munhwa.com/article/11576604" title="초등생에 ‘성(性) 선택 가능’이라는 교과서?…김재섭 의원 비난" image="/assets/img/link-cards/munhwa-11576604.jpg" %}

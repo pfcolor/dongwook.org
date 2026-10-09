@@ -1,6 +1,7 @@
 ---
 title: 틀린 근거와 옳은 주장
 date: 2018-06-06
+description: "정치적 이념은 과학에 대한 태도와 별 관련이 없다. 근거가 과학적으로 틀렸다는 사실만으로 정치적 쟁점에 대한 태도를 정하지 않는 이유."
 ---
 
 {% include link-card.html url="http://newspeppermint.com/2018/06/01/distrustscience/" title="사람들은 왜 과학을 믿지 않게 되는 걸까?" %}

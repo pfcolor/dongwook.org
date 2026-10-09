@@ -1,6 +1,7 @@
 ---
 title: 학교 급식, 알레르기와 할랄
 date: 2019-08-13
+description: "학교 급식의 할랄 식단 기사에 달린 이슬람 혐오 댓글을 읽고, 알레르기 학생과 마찬가지로 대체식을 제공해야 한다고 주장한다."
 ---
 
 {% include link-card.html url="http://www.newsis.com/view/?id=NISX20190812_0000738357&cID=10899&pID=10800" title="광주 이슬람 출신 일부 초등생, 할랄식품 없어 점심 걸러" image="/assets/img/link-cards/newsis-NISX20190812_0000738357.jpg" %}

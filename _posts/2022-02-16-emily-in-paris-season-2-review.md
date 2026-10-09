@@ -1,6 +1,7 @@
 ---
 title: 〈에밀리, 파리에 가다〉 시즌2 감상평
 date: 2022-02-16
+description: "〈에밀리, 파리에 가다〉 시즌2는 ‘판타지’라서 재밌게 봤지만, 북아프리카·중동계 이민자가 거의 나오지 않는 점은 지적한다."
 ---
 
 {% include link-card.html url="https://youtu.be/6ZPDiORTS1s" title="[에밀리, 파리에 가다] 속 프랑스의 현실 & 판타지 @frenchmonster7" image="/assets/img/link-cards/youtube-6ZPDiORTS1s.jpg" %}

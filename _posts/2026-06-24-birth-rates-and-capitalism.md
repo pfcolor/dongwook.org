@@ -1,6 +1,7 @@
 ---
 title: 출생률과 자본주의
 date: 2026-06-24
+description: "크리스틴 고드시가 쓴 출생률과 자본주의에 관한 글을 읽고. 동독 이상화에는 동의하기 어렵지만 지적 자체는 흥미롭다."
 ---
 
 {% include link-card.html url="https://jacobin.com/2026/06/birth-rates-capitalism-socialism-germany" title="No Babies? Blame Capitalism." image="/assets/img/link-cards/jacobin-birth-rates-capitalism.jpg" %}

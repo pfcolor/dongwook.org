@@ -1,6 +1,7 @@
 ---
 title: GMO와 자본주의적 농업
 date: 2022-08-12
+description: "GMO가 해롭다는 근거는 없다는 데 동의하면서도, GMO와 농업을 둘러싼 쿨란스키의 주장은 비판하는 글."
 ---
 
 {% include link-card.html url="https://www.facebook.com/eunsu.jang.7/posts/pfbid02pSdYrr85JXidbD12Uj8Xj6Rob1kEGGKpbT7zA6VLbnLzt9HazjYeBRzeLGfCQggul" title="장은수님의 게시물" image="/assets/img/link-cards/facebook-5513921985326286.jpg" %}

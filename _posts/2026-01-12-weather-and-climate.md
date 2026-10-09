@@ -1,6 +1,7 @@
 ---
 title: 날씨와 기후
 date: 2026-01-12
+description: "논픽션 판매 감소를 다룬 《가디언》 기사에 대해, 판매량 증감은 ‘날씨’일 뿐이고 위기의 시대에는 장편 논픽션이 비판적 사고의 도구로 중요하다는 생각."
 ---
 
 {% include link-card.html url="https://www.theguardian.com/books/2025/dec/17/are-we-falling-out-of-love-with-nonfiction" title="Are we falling out of love with nonfiction?" image="/assets/img/link-cards/guardian-falling-out-of-love-with-nonfiction.jpg" %}

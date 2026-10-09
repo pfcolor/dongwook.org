@@ -1,6 +1,7 @@
 ---
 title: 멍한 머리와 글루타메이트
 date: 2026-03-14
+description: "번역을 하다 보면 머리가 멍해지는 이유를 설명하는 연구. 뇌의 전전두피질에 글루타메이트가 쌓인다는 내용."
 ---
 
 {% include link-card.html url="https://www.cell.com/current-biology/fulltext/S0960-9822(22)01111-3" title="A neuro-metabolic account of why daylong cognitive work alters the control of economic decisions" image="/assets/img/link-cards/cell-current-biology-2022-glutamate.jpg" %}

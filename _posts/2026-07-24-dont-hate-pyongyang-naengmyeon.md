@@ -1,6 +1,7 @@
 ---
 title: 평양냉면을 너무 미워하지 말았으면
 date: 2026-07-24
+description: "평양냉면을 욕하는 게 새로운 유행인 듯한 요즘, 그래도 이해가 안 가는 ‘슴슴하다’는 표현에 대한 생각."
 ---
 
 {% include link-card.html url="https://youtu.be/5qqnBIXe6og" title="아무 맛도 안 나는데 왜 비쌀까?" image="/assets/img/link-cards/youtube-5qqnBIXe6og.jpg" %}

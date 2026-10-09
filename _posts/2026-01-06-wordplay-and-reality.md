@@ -1,6 +1,7 @@
 ---
 title: 말장난만 하면 현실이 바뀌나
 date: 2026-01-06
+description: "서울시의 ‘경력인정서’ 보도를 보고, 가사·돌봄 노동이 천대받는 현실이 말장난으로 바뀌는지 묻는다."
 ---
 
 {% include link-card.html url="https://www.ytn.co.kr/_ln/0115_202601032219486544" title="서울에 트램 등장·GTX-A 사실상 전 구간 개통...새해 달라지는 모습은?" image="/assets/img/link-cards/ytn-202601032219486544.jpg" %}

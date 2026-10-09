@@ -1,6 +1,7 @@
 ---
 title: 유익한 누룩곰팡이만 골라내는 방법?
 date: 2022-04-13
+description: "전통 방식으로 막걸리를 만드는 영상을 보다가 든 의문, 유익한 누룩곰팡이만 어떻게 골라내는가."
 ---
 
 {% include link-card.html url="https://youtu.be/1DppLozIPsQ" title="How to Tell if Mold Is Safe to Eat?! Can You Really Identify Koji Mold by Sight?" image="/assets/img/link-cards/youtube-1DppLozIPsQ.jpg" %}

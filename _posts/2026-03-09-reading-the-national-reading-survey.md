@@ -1,6 +1,7 @@
 ---
 title: 국민독서실태조사를 읽으며
 date: 2026-03-09
+description: "2025년 국민독서실태조사 결과보고서를 읽고, 공공도서관을 늘리고 찾고 싶은 공간으로 바꾸는 것이 현실적인 방안이라는 생각을 적었다."
 ---
 
 {% include link-card.html url="http://www.mcst.go.kr/site/s_policy/dept/deptView.jsp?pSeq=2114&pDataCD=0417000000" title="2025년 국민독서실태조사" image="/assets/img/link-cards/mcst-2114.jpg" %}

@@ -1,6 +1,7 @@
 ---
 title: 과장과 평가절하
 date: 2026-04-20
+description: "번역가 인터뷰를 읽고, AI가 할 수 있느냐 없느냐보다 세간의 과장과 번역에 대한 평가절하가 더 위협적이라는 생각을 적었다."
 ---
 
 {% include link-card.html url="https://www.khan.co.kr/article/202604200600081" title="“AI가 전부인 줄 아나” 어느 번역가의 혼잣말···‘딸깍’에 시작된 번역가 분투기[딸깍, 노동③]" image="/assets/img/link-cards/khan-202604200600081.jpg" %}

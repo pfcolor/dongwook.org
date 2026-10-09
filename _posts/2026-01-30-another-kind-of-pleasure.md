@@ -1,6 +1,7 @@
 ---
 title: 다른 종류의 즐거움
 date: 2026-01-30
+description: "책 읽기는 유튜브나 틱톡과 다른 종류의 즐거움이다. 영국의 ‘독서의 해’ 기사를 읽고 쓴 짧은 생각."
 ---
 
 {% include link-card.html url="https://www.theguardian.com/books/2026/jan/22/its-about-making-reading-as-natural-as-breathing-malorie-blackman-backs-the-national-year-of-reading" title="‘It’s about making reading as natural as breathing’: Malorie Blackman backs the National Year of Reading" image="/assets/img/link-cards/guardian-national-year-of-reading.jpg" %}

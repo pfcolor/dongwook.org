@@ -1,6 +1,7 @@
 ---
 title: 계급투쟁으로부터 도피는 참 다양한 방식으로 이뤄지는구나
 date: 2025-11-14
+description: "나카자와 신이치의 ‘이슬람은 그 존재 자체가 경제학 비판’이라는 주장에 대한 반문. 이슬람 사회에도 자본가와 노동자가 있다."
 ---
 
 {% include link-card.html url="https://stibee.com/api/v1.0/emails/share/PaXWfMMOmVSSeqvELcMRpoKcIMYV1lg" title="뉴스레터 책과참치 19호-모든 것을 전부 다시 사유해야 한다" %}
