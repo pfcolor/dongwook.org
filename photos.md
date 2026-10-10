@@ -18,7 +18,7 @@ subtitle: shot on a whim. kept on purpose.
 
 {{ page.pager }}
 
-<dialog class="photo-viewer">
+<dialog class="photo-viewer" tabindex="-1">
   <img alt="">
   <div class="photo-meta mono">
     <span class="photo-date"></span>
@@ -38,6 +38,7 @@ subtitle: shot on a whim. kept on purpose.
       img.src = a.href;
       date.textContent = a.dataset.date;
       dlg.showModal();
+      dlg.focus();
     });
     dlg.addEventListener("click", function () { dlg.close(); });
     dlg.addEventListener("close", function () { img.removeAttribute("src"); });

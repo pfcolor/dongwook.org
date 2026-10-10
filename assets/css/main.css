@@ -565,6 +565,11 @@ mark {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
 }
 
+/* 열 때 포커스는 대화상자 자체로 간다(photos.md에서 showModal 뒤 dlg.focus()). 그래야 iOS Safari가 × 버튼에 파란 테두리를 그리지 않는다. */
+.photo-viewer:focus {
+  outline: none;
+}
+
 .photo-viewer::backdrop {
   background: rgba(0, 0, 0, 0.55);
 }
