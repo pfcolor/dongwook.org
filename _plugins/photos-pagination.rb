@@ -19,7 +19,7 @@ module PhotosPagination
 
       raw = index.content
       index.data["photos"] = pages[0]
-      index.data["pager"] = pager(1, total)
+      index.data["pager"] = pager(site, 1, total)
       index.data["nav"] = "/photos/"
 
       pages.each_with_index do |chunk, i|
@@ -34,7 +34,7 @@ module PhotosPagination
           "permalink" => "/photos/page/#{n}/",
           "nav" => "/photos/",
           "photos" => chunk,
-          "pager" => pager(n, total)
+          "pager" => pager(site, n, total)
         )
         site.pages << page
       end
@@ -51,17 +51,18 @@ module PhotosPagination
       chunks
     end
 
-    def pager(current, total)
-      link = ->(n) { n == 1 ? "/photos/" : "/photos/page/#{n}/" }
+    def pager(site, current, total)
+      base = site.config["baseurl"].to_s.chomp("/")
+      link = ->(n) { base + (n == 1 ? "/photos/" : "/photos/page/#{n}/") }
       items = (1..total).map do |n|
         if n == current
           %(<span aria-current="page">#{n}</span>)
         else
-          %(<a href="{{ '#{link.(n)}' | relative_url }}">#{n}</a>)
+          %(<a href="#{link.(n)}">#{n}</a>)
         end
       end
-      prev_link = current > 1 ? %(<a href="{{ '#{link.(current - 1)}' | relative_url }}" rel="prev">←</a>) : ""
-      next_link = current < total ? %(<a href="{{ '#{link.(current + 1)}' | relative_url }}" rel="next">→</a>) : ""
+      prev_link = current > 1 ? %(<a href="#{link.(current - 1)}" rel="prev">←</a>) : ""
+      next_link = current < total ? %(<a href="#{link.(current + 1)}" rel="next">→</a>) : ""
       %(<nav class="pager mono" aria-label="photos pages">#{prev_link}#{items.join}#{next_link}</nav>)
     end
   end

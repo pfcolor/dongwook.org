@@ -16,7 +16,7 @@ subtitle: shot on a whim. kept on purpose.
 {%- endfor %}
 </ul>
 
-{{ page.pager | liquify }}
+{{ page.pager }}
 
 <dialog class="photo-viewer">
   <img alt="">
