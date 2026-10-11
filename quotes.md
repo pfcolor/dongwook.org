@@ -8,6 +8,17 @@ subtitle: underlined. then copied out.
 <div class="quotes-head"><span>title</span><span>added</span></div>
 
 <details markdown="1">
+<summary><span class="date">2026-10-11</span>Reading Is Not Dying <span class="by">Osita Nwanevu</span></summary>
+
+> Depressing as much of the material Marriott assembles might be, however, the evidence that reading is doomed is thinner than he implies. He writes, for example, that in the United States “reading for pleasure declined by 40 per cent in the first two decades of the twenty-first century.” That’s a figure from a 2025 paper analyzing data from the American Time Use Survey, which found that the proportion of Americans who reported reading for pleasure on the average day fell by 40 percent between 2003 and 2023. But 20 years ago, not many Americans were reading on the average day in the first place. The proportion of Americans reading for pleasure over this period peaked at 28 percent in 2004, while it reached its lowest point in 2023, at 16 percent. And as The New York Times’ David Wallace-Wells recently observed, the same 2025 paper found that the average amount of time Americans spend reading books each day declined by less than six minutes.
+>
+> Crucially, these figures only pertain to books and printed materials. If books and the printed word really are losing ground, it’s partially because the internet and the smartphone have besieged us with competing texts to read—as anyone who’s tried to bat away the noise of emails, messages, notifications, news alerts, and tweets to settle down with a book knows. But the 2025 paper doesn’t capture any of that—the American Time Use Survey data it was based on didn’t explicitly categorize reading on the internet as a form of reading for pleasure.
+
+[newrepublic.com](https://newrepublic.com/article/216302/reading-not-dying-literacy-crisis)
+{: .source}
+</details>
+
+<details markdown="1">
 <summary><span class="date">2026-10-07</span>사주·정신과·보톡스, 이토록 불안한 쇼핑···왜 지금이 ‘춘추정병시대’인가 <span class="by">김희진, 김나현, 이효상, 배재흥</span></summary>
 
 > 2024년 언급량이 대폭 늘어난 ‘누칼협’(누가 칼 들고 협박함?)과 ‘알빠노’(내 알 바 아니다)는 한발 더 나아갔다. 구조 얘기를 꺼내는 사람을 남 탓한다고 힐난했다. 불안은 오롯이 개인의 책임이 됐다. 그 끝에 도착한 유행어가 2026년 ‘정병’이다. 병명으로 진단해야 하는 불안에는 도무지 구조가 끼어들 틈이 없다. 그러나 구조를 생략한 처방전은 불안을 없애지 못한다. 청년은 진통제로 노력을 끌어쓴다. (중략) 온갖 ‘정병’이 난무하는 춘추정병시대. 청년은 처방을 받고, 감정 스위치를 꺼버린 채 오늘을 넘긴다. 세상을 탓하는 사람은 아무도 없었다.
