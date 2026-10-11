@@ -248,6 +248,21 @@ h1 {
   height: auto;
 }
 
+.content figure {
+  margin: 2.2em 0;
+}
+
+.content figure img {
+  display: block;
+}
+
+.content figcaption {
+  margin-top: 0.4em;
+  font-size: 0.85em;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
 /* 한글에는 이탤릭이 어울리지 않아 쓰지 않는다 */
 em,
 i,
