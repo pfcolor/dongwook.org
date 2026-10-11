@@ -96,7 +96,8 @@ a {
   .site-header nav {
     order: 3;
     flex-basis: 100%;
-    gap: 0.8rem;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.6rem;
     margin-left: 0;
     font-size: 0.85rem;
   }
