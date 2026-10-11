@@ -232,6 +232,14 @@ h1 {
 .content h3 { font-size: 1.15rem; }
 .content h4 { font-size: 1rem; }
 
+/* about: 첫 줄만 본문보다 조금 크고 굵게 */
+.page .lead {
+  margin: 0 0 0.6em;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
 /* 페이지의 소제목은 고정폭이라 같은 크기에서도 커 보이므로 줄인다 */
 .page .content h2 { font-size: 1.05rem; }
 .page .content h3 { font-size: 1rem; }

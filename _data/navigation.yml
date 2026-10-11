@@ -8,5 +8,7 @@
   url: /books/
 - title: quotes
   url: /quotes/
+- title: about
+  url: /about/
 - title: search
   url: /search/
