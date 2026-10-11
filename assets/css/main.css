@@ -638,3 +638,9 @@ mark {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* 각주 돌아가기 버튼(↩)이 iOS에서 이모지로 나오지 않도록 텍스트 글리프로 고정 */
+.reversefootnote {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-variant-emoji: text;
+}

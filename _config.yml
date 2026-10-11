@@ -28,6 +28,7 @@ markdown: kramdown
 kramdown:
   input: GFM
   syntax_highlighter: rouge
+  footnote_backlink: "&#8617;&#xFE0E;"
 
 permalink: /:year/:month/:day/:title/
 
