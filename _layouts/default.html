@@ -36,7 +36,9 @@
   <meta name="theme-color" content="#161616" media="(prefers-color-scheme: dark)">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;700&display=swap">
+  {%- comment %} 폰트 CSS가 첫 화면을 막지 않도록 print로 받고 로드가 끝나면 all로 바꾼다 {% endcomment %}
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;700&display=swap"></noscript>
   <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 </head>
 <body>
