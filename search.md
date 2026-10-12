@@ -3,6 +3,8 @@ layout: page
 title: search
 permalink: /search/
 subtitle: somewhere in here. probably.
+sitemap: false
+noindex: true
 ---
 
 <input id="search-input" class="search-input" type="search" placeholder="검색어를 입력해 주세요…" aria-label="search" autocomplete="off" autofocus>
