@@ -8,7 +8,6 @@
       name: "이름",
       body: "댓글",
       submit: "남기기",
-      note: "욕설이나 시비, 광고 등은 숨김 처리될 수 있습니다.",
       reply: "답글",
       owner: "글쓴이",
       replyingTo: "답글 대상: ",
@@ -27,7 +26,6 @@
       name: "Name",
       body: "Comment",
       submit: "Post",
-      note: "Abusive comments, spam and ads may be hidden.",
       reply: "Reply",
       owner: "Author",
       replyingTo: "Replying to ",
@@ -57,7 +55,6 @@
 
   form.querySelector(".comment-name").placeholder = t.name;
   form.querySelector(".comment-body").placeholder = t.body;
-  form.querySelector(".comment-note").textContent = t.note;
   button.textContent = t.submit;
 
   function formatDate(ms) {
@@ -170,6 +167,8 @@
     s.onload = function () {
       window.turnstile.render(form.querySelector(".comment-captcha"), {
         sitekey: root.dataset.sitekey,
+        // 평소에는 숨기고, 사람인지 의심스러운 방문자에게만 확인 상자를 보인다.
+        appearance: "interaction-only",
         callback: function (token) { captchaToken = token; }
       });
     };
