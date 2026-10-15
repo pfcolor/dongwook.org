@@ -14,7 +14,11 @@
       cancel: "취소",
       sending: "보내는 중…",
       visible: "등록했습니다.",
-      held: "검토 후 공개됩니다.",
+      held: "자동 검사에서 보류되어 검토 후 공개됩니다.",
+      held_link: "링크가 포함되어 있어 검토 후 공개됩니다.",
+      held_contact: "연락처가 포함되어 있어 검토 후 공개됩니다.",
+      held_repeat: "같은 내용이 반복되어 검토 후 공개됩니다.",
+      heldHint: " 내용을 고쳐서 다시 보내셔도 됩니다.",
       rate: "너무 자주 남기고 있습니다. 잠시 후 다시 시도해 주세요.",
       captcha: "확인 절차를 통과하지 못했습니다. 다시 시도해 주세요.",
       parent: "답글을 달 댓글을 찾을 수 없습니다. 새로고침한 뒤 다시 시도해 주세요.",
@@ -32,7 +36,11 @@
       cancel: "Cancel",
       sending: "Sending…",
       visible: "Posted.",
-      held: "It will appear after review.",
+      held: "It was held by the automatic check and will appear after review.",
+      held_link: "It contains a link, so it will appear after review.",
+      held_contact: "It contains contact details, so it will appear after review.",
+      held_repeat: "It repeats an earlier comment, so it will appear after review.",
+      heldHint: " You can also edit it and send it again.",
       rate: "You are posting too often. Please try again shortly.",
       captcha: "Verification failed. Please try again.",
       parent: "The comment you are replying to could not be found. Please reload and try again.",
@@ -196,11 +204,15 @@
         return res.json().catch(function () { return {}; }).then(function (data) { return { res: res, data: data }; });
       })
       .then(function (r) {
+        var wasReply = Boolean(replyTo);
         if (r.res.ok && r.data.status === "visible") {
           append(r.data.comment);
           setStatus(t.visible);
+          form.elements.body.value = "";
+          cancelReply();
         } else if (r.res.ok) {
-          setStatus(t.held);
+          // 보류: 이유를 알려 주고, 쓴 내용은 그대로 둬서 고쳐 다시 보낼 수 있게 한다.
+          setStatus((t["held_" + r.data.reason] || t.held) + t.heldHint);
         } else if (r.res.status === 429) {
           setStatus(t.rate);
           return;
@@ -216,10 +228,8 @@
           setStatus(t.error);
           return;
         }
-        form.elements.body.value = "";
-        cancelReply();
         if (window.turnstile) { window.turnstile.reset(); captchaToken = ""; }
-        track("comment_submit", { result: r.data.status, reply: replyTo ? "yes" : "no" });
+        track("comment_submit", { result: r.data.status, reason: r.data.reason || "", reply: wasReply ? "yes" : "no" });
       })
       .catch(function () { setStatus(t.error); })
       .then(function () { button.disabled = false; });

@@ -140,7 +140,7 @@ async function create(request, env, ctx, cors) {
   if (body.length < 2 || body.length > MAX_BODY) return json({ error: "bad_body" }, 400, cors);
 
   // 봇이 채우는 숨은 칸. 채워져 있으면 저장하지 않고 성공한 척한다.
-  if (input.website) return json({ status: "held" }, 200, cors);
+  if (input.website) return json({ status: "held", reason: "review" }, 200, cors);
 
   const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
 
@@ -177,16 +177,23 @@ async function create(request, env, ctx, cors) {
     .bind(ipHash, body, now - 86_400_000)
     .first();
 
-  let { status, reason } = classify({ name, body, isDuplicate: Boolean(duplicate) });
+  let { status, reason, code } = classify({ name, body, isDuplicate: Boolean(duplicate) });
 
-  // 규칙을 통과한 댓글만 AI로 한 번 더 본다. 한도 소진이나 오류 때는 건너뛰고 그대로 공개한다.
-  if (status === "visible" && env.AI) {
-    try {
-      const { verdict } = await judge(env, `${name}\n${body}`);
-      if (verdict === "ABUSIVE") ({ status, reason } = { status: "hidden", reason: "AI 판별: 욕설·시비" });
-      else if (verdict === "SPAM") ({ status, reason } = { status: "hidden", reason: "AI 판별: 스팸" });
-    } catch (err) {
-      console.error("AI 판별 실패(건너뜀)", err.message);
+  // 규칙을 통과한 댓글만 AI로 한 번 더 본다. 한도 소진이나 오류 때는 건너뛰고 그대로 공개하되,
+  // 알림 메일에 "AI 검사를 건너뜀"이라고 표시해 조용히 실패하는 일이 없게 한다.
+  let aiFailure = null;
+  if (status === "visible") {
+    if (!env.AI) {
+      aiFailure = "AI 연결이 없음";
+    } else {
+      try {
+        const { verdict } = await judge(env, `${name}\n${body}`);
+        if (verdict === "ABUSIVE") ({ status, reason, code } = { status: "hidden", reason: "AI 판별: 욕설·시비", code: "review" });
+        else if (verdict === "SPAM") ({ status, reason, code } = { status: "hidden", reason: "AI 판별: 스팸", code: "review" });
+      } catch (err) {
+        aiFailure = String(err?.message ?? err).replace(/\s+/g, " ").slice(0, 160);
+        console.error("AI 판별 실패(건너뜀)", aiFailure);
+      }
     }
   }
 
@@ -199,7 +206,7 @@ async function create(request, env, ctx, cors) {
     .run();
 
   ctx.waitUntil(
-    notify(env, new URL(request.url).origin, { id, slug, name, body, status, reason, isReply: Boolean(parentId) }),
+    notify(env, new URL(request.url).origin, { id, slug, name, body, status, reason, aiFailure, isReply: Boolean(parentId) }),
   );
 
   if (status === "visible") {
@@ -209,7 +216,7 @@ async function create(request, env, ctx, cors) {
       cors,
     );
   }
-  return json({ status: "held" }, 202, cors);
+  return json({ status: "held", reason: code ?? "review" }, 202, cors);
 }
 
 async function verifyTurnstile(secret, token, ip) {
@@ -250,6 +257,9 @@ async function notify(env, workerOrigin, c) {
   const hidden = c.status === "hidden";
   const kind = c.isReply ? "답글" : "댓글";
   const lines = [
+    ...(c.aiFailure
+      ? [`⚠ AI 검사를 건너뜀: ${c.aiFailure}`, "이 댓글은 AI 검사 없이 처리되었습니다. 직접 확인해 주세요.", ""]
+      : []),
     hidden ? `자동 숨김: ${c.reason}` : "공개됨",
     "",
     `글: ${env.SITE_ORIGIN}${c.slug}`,
@@ -264,7 +274,8 @@ async function notify(env, workerOrigin, c) {
     `전체 목록: ${await adminLink(env, workerOrigin, "list", "list")}`,
   ];
 
-  await sendMail(env, `[${kind}${hidden ? ", 자동 숨김" : ""}] ${c.slug}`, lines.join("\n"));
+  const tags = [hidden ? "자동 숨김" : null, c.aiFailure ? "AI 검사 건너뜀" : null].filter(Boolean);
+  await sendMail(env, `[${kind}${tags.length ? `, ${tags.join(", ")}` : ""}] ${c.slug}`, lines.join("\n"));
 }
 
 // 글쓴이가 올린 답글에 대한 확인 메일. 나중에 고치거나 숨기거나 지울 수 있게 링크를 남긴다.

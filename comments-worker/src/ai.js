@@ -15,6 +15,9 @@ OK: everything else, including thanks, praise, questions, requests for sources, 
 If you are unsure, answer OK.`;
 
 export async function judge(env, text, model = DEFAULT_MODEL) {
+  // 로컬 시험에서 AI 실패 경로를 확인하기 위한 스위치. 배포본에는 DEV가 없어 동작하지 않는다.
+  if (env.DEV === "1" && env.DEV_AI_FAIL === "1") throw new Error("시험용 강제 실패");
+
   const result = await env.AI.run(model, {
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
