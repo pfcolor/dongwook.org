@@ -570,6 +570,8 @@ pre code {
   background: none;
   color: var(--text);
   font: inherit;
+  /* 메뉴·제목과 같은 고정폭 글꼴(.mono와 같은 목록). 위의 font: inherit가 .mono를 덮어쓰기 때문에 여기서 다시 지정한다. */
+  font-family: "JetBrains Mono", "IBM Plex Sans", "IBM Plex Sans KR", ui-monospace, "SF Mono", Menlo, monospace;
   font-size: 0.9rem;
   cursor: pointer;
 }

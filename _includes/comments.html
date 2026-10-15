@@ -3,14 +3,13 @@
 <section class="comments" id="comments"
   data-api="{{ site.comments_api }}"
   data-slug="{{ page.url }}"
-  data-lang="{{ page.lang | default: site.lang }}"
   {%- if site.turnstile_sitekey and site.turnstile_sitekey != "" %} data-sitekey="{{ site.turnstile_sitekey }}"{% endif %}>
   <h2 class="mono">comments</h2>
   <ul class="comment-list" aria-live="polite"></ul>
   <form class="comment-form" hidden>
     <p class="comment-replying" hidden><span class="comment-replying-name"></span> <button type="button" class="mono"></button></p>
     <input class="comment-name" type="text" name="name" maxlength="30" autocomplete="nickname" required>
-    <textarea class="comment-body" name="body" rows="4" maxlength="2000" required></textarea>
+    <textarea class="comment-body" name="body" rows="4" maxlength="1000" required></textarea>
     <input class="comment-trap" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
     <div class="comment-captcha"></div>
     <div class="comment-actions">

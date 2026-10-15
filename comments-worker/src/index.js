@@ -2,7 +2,7 @@ import { classify } from "./rules.js";
 import { judge } from "./ai.js";
 
 const MAX_NAME = 30;
-const MAX_BODY = 2000;
+const MAX_BODY = 1000;
 const RATE_PER_MINUTE = 3;
 const RATE_PER_HOUR = 20;
 // 메일 링크가 유효한 기간. 서명에 만료 시각이 들어가 있어 링크를 고쳐 연장할 수 없다.
@@ -344,7 +344,7 @@ async function admin(request, url, env) {
       await env.DB.prepare("DELETE FROM comments WHERE id = ? OR parent_id = ?").bind(id, id).run();
     } else if (action === "reply") {
       const reply = (params.get("reply") ?? "").trim();
-      if (reply.length < 1 || reply.length > MAX_BODY) return page("답글은 1자 이상 2,000자 이하로 써 주세요.", 400);
+      if (reply.length < 1 || reply.length > MAX_BODY) return page(`답글은 1자 이상 ${MAX_BODY.toLocaleString("ko-KR")}자 이하로 써 주세요.`, 400);
       const replyId = crypto.randomUUID();
       await env.DB.prepare(
         "INSERT INTO comments (id, slug, name, body, status, reason, parent_id, is_owner, ip_hash, created_at) VALUES (?, ?, ?, ?, 'visible', NULL, ?, 1, 'owner', ?)",
@@ -355,7 +355,7 @@ async function admin(request, url, env) {
       return page(`<p>${ACTIONS.reply.done} 수정·숨김·삭제 링크를 메일로 보냈습니다.</p>${postLink}${backLink}`, 200, true);
     } else if (action === "edit") {
       const text = (params.get("reply") ?? "").trim();
-      if (text.length < 1 || text.length > MAX_BODY) return page("답글은 1자 이상 2,000자 이하로 써 주세요.", 400);
+      if (text.length < 1 || text.length > MAX_BODY) return page(`답글은 1자 이상 ${MAX_BODY.toLocaleString("ko-KR")}자 이하로 써 주세요.`, 400);
       await env.DB.prepare("UPDATE comments SET body = ? WHERE id = ?").bind(text, id).run();
       return page(`<p>${ACTIONS.edit.done}</p>${postLink}${backLink}`, 200, true);
     } else {

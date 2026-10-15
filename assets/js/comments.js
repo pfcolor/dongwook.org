@@ -2,56 +2,33 @@
   var root = document.getElementById("comments");
   if (!root) return;
 
-  var STRINGS = {
-    ko: {
-      empty: "아직 댓글이 없습니다.",
-      name: "이름",
-      body: "댓글",
-      submit: "남기기",
-      reply: "답글",
-      owner: "글쓴이",
-      replyingTo: "답글 대상: ",
-      cancel: "취소",
-      sending: "보내는 중…",
-      visible: "등록했습니다.",
-      held: "자동 검사에서 보류되어 검토 후 공개됩니다.",
-      held_link: "링크가 포함되어 있어 검토 후 공개됩니다.",
-      held_contact: "연락처가 포함되어 있어 검토 후 공개됩니다.",
-      held_repeat: "같은 내용이 반복되어 검토 후 공개됩니다.",
-      heldHint: " 내용을 고쳐서 다시 보내셔도 됩니다.",
-      rate: "너무 자주 남기고 있습니다. 잠시 후 다시 시도해 주세요.",
-      captcha: "확인 절차를 통과하지 못했습니다. 다시 시도해 주세요.",
-      parent: "답글을 달 댓글을 찾을 수 없습니다. 새로고침한 뒤 다시 시도해 주세요.",
-      error: "등록하지 못했습니다. 잠시 후 다시 시도해 주세요.",
-      loadError: "댓글을 불러오지 못했습니다."
-    },
-    en: {
-      empty: "No comments yet.",
-      name: "Name",
-      body: "Comment",
-      submit: "Post",
-      reply: "Reply",
-      owner: "Author",
-      replyingTo: "Replying to ",
-      cancel: "Cancel",
-      sending: "Sending…",
-      visible: "Posted.",
-      held: "It was held by the automatic check and will appear after review.",
-      held_link: "It contains a link, so it will appear after review.",
-      held_contact: "It contains contact details, so it will appear after review.",
-      held_repeat: "It repeats an earlier comment, so it will appear after review.",
-      heldHint: " You can also edit it and send it again.",
-      rate: "You are posting too often. Please try again shortly.",
-      captcha: "Verification failed. Please try again.",
-      parent: "The comment you are replying to could not be found. Please reload and try again.",
-      error: "Could not post. Please try again later.",
-      loadError: "Could not load comments."
-    }
+  // 문구는 한 벌이다. 메뉴처럼 훑어보는 짧은 말은 사이트 톤에 맞춰 영어로 쓰고,
+  // 읽고 이해해야 하는 안내와 오류는 한국어로 쓴다.
+  var t = {
+    empty: "no comments yet.",
+    name: "name",
+    body: "comment",
+    submit: "post",
+    reply: "reply",
+    owner: "author",
+    replyingTo: "replying to ",
+    cancel: "cancel",
+    sending: "sending…",
+    visible: "posted.",
+    held: "자동 검사에서 보류되어 검토 후 공개됩니다.",
+    held_link: "링크가 포함되어 있어 검토 후 공개됩니다.",
+    held_contact: "연락처가 포함되어 있어 검토 후 공개됩니다.",
+    held_repeat: "같은 내용이 반복되어 검토 후 공개됩니다.",
+    heldHint: " 내용을 고쳐서 다시 보내셔도 됩니다.",
+    rate: "너무 자주 남기고 있습니다. 잠시 후 다시 시도해 주세요.",
+    captcha: "확인 절차를 통과하지 못했습니다. 다시 시도해 주세요.",
+    parent: "답글을 달 댓글을 찾을 수 없습니다. 새로고침한 뒤 다시 시도해 주세요.",
+    error: "등록하지 못했습니다. 잠시 후 다시 시도해 주세요.",
+    loadError: "댓글을 불러오지 못했습니다."
   };
 
   var api = root.dataset.api.replace(/\/$/, "");
   var slug = root.dataset.slug;
-  var t = STRINGS[root.dataset.lang] || STRINGS.ko;
 
   var list = root.querySelector(".comment-list");
   var form = root.querySelector(".comment-form");
