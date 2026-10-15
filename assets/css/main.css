@@ -453,6 +453,45 @@ pre code {
   color: var(--muted);
 }
 
+.comment-owner {
+  padding: 0 0.35rem;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.comment-reply-btn,
+.comment-replying button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.comment-reply-btn:hover,
+.comment-replying button:hover {
+  color: var(--text);
+}
+
+.comment-replies {
+  margin: 0.6rem 0 0 0.4rem;
+  padding: 0 0 0 1rem;
+  border-left: 3px solid var(--border);
+  list-style: none;
+}
+
+.comment-replies > li {
+  padding: 0.6rem 0 0;
+  border-bottom: 0;
+}
+
+.comment-replying {
+  margin: 0 0 0.6rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
 .comment-empty {
   color: var(--muted);
   font-size: 0.9rem;

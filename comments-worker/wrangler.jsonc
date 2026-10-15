@@ -21,7 +21,8 @@
 
   "vars": {
     "SITE_ORIGIN": "https://dongwook.org",
-    "MAIL_FROM": "comments@dongwook.org"
+    "MAIL_FROM": "comments@dongwook.org",
+    "OWNER_NAME": "동욱"
   }
 
   // 비밀 값(wrangler secret put): ADMIN_SECRET, NOTIFY_TO, HASH_SALT, TURNSTILE_SECRET(선택)

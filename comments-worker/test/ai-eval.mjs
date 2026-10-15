@@ -18,20 +18,21 @@ for (const model of models) {
   }
   const { results } = await res.json();
 
-  let hitOk = 0, totalOk = 0, hitAbusive = 0, totalAbusive = 0;
+  const total = { OK: 0, ABUSIVE: 0, SPAM: 0 };
+  const hit = { OK: 0, ABUSIVE: 0, SPAM: 0 };
   const wrong = [];
   const unsure = [];
   results.forEach((r, i) => {
     const { label, text } = set[i];
     if (label === "?") return unsure.push(`${r.verdict}  ${text}`);
-    if (label === "OK") { totalOk++; r.verdict === "OK" ? hitOk++ : wrong.push(`정상인데 숨김: ${text}`); }
-    else { totalAbusive++; r.verdict === "ABUSIVE" ? hitAbusive++ : wrong.push(`욕설인데 통과: ${text}`); }
+    total[label]++;
+    if (r.verdict === label) hit[label]++;
+    else wrong.push(`정답 ${label} → 판정 ${r.verdict}: ${text}`);
   });
 
   console.log(`\n## ${model}  (${((Date.now() - started) / 1000).toFixed(1)}초)`);
-  console.log(`정상 댓글 통과 ${hitOk}/${totalOk}, 욕설·시비 숨김 ${hitAbusive}/${totalAbusive}`);
+  console.log(`정상 통과 ${hit.OK}/${total.OK}, 욕설·시비 ${hit.ABUSIVE}/${total.ABUSIVE}, 스팸 ${hit.SPAM}/${total.SPAM}`);
   wrong.forEach((w) => console.log("  ✗ " + w));
   console.log("애매한 것(정답 없음):");
   unsure.forEach((u) => console.log("  · " + u));
-  console.log("원응답 예시:", JSON.stringify(results.slice(0, 3).map((r) => r.raw)));
 }

@@ -1,21 +1,24 @@
-// Workers AI로 명백한 욕설·인신공격·혐오·시비 댓글만 가려낸다.
+// Workers AI로 명백한 욕설·시비와 스팸만 가려낸다.
 // 애매하면 OK로 둔다. 숨김은 복원할 수 있지만, 정당한 반대 의견이 숨겨지면 대화를 막기 때문이다.
 
 export const DEFAULT_MODEL = "@cf/qwen/qwen3-30b-a3b-fp8";
 
-const SYSTEM_PROMPT = `너는 개인 블로그의 댓글 검수자다. 댓글이 아래에 해당하면 ABUSIVE, 아니면 OK라고만 답한다. 다른 말은 쓰지 않는다.
+// 영어 스팸이 많을 것이라 지시문은 영어로 쓰고, 댓글은 어떤 언어든 같은 기준으로 본다.
+const SYSTEM_PROMPT = `You moderate comments on a personal blog about society, religion, language and books. Comments may be in Korean or English (or other languages). Reply with exactly one word: OK, ABUSIVE, or SPAM.
 
-ABUSIVE: 욕설, 모욕, 인신공격, 특정 집단에 대한 혐오 표현, 글쓴이를 깎아내리거나 도발하려는 시비. 욕설을 기호나 숫자, 공백으로 변형한 것도 포함한다.
+ABUSIVE: insults, profanity (including obfuscated forms like "f u c k" or "시1발"), personal attacks on the author or other commenters, hate speech against a group, or comments written only to provoke or demean.
 
-OK: 공감, 감사, 질문, 정보나 사례 보태기, 오탈자 지적, 예의를 지킨 반대와 비판, 근거를 묻는 말. 글의 주제가 민감해도 댓글이 예의를 지키면 OK다. 욕설과 비슷하게 생겼어도 일반 단어로 쓰인 것(예: '시발점', 음식 이름)은 OK다.
+SPAM: advertising or promotion of any product, service, site, or channel; SEO, link-building or traffic-selling offers; scams and get-rich-quick schemes (loans, investment, crypto signals, casino, betting, adult content, fake prizes); solicitation to contact someone privately (messenger IDs, phone numbers, "DM me"); relationship or escort bait; copy-pasted irrelevant text or gibberish.
 
-판단이 애매하면 OK라고 답한다.`;
+OK: everything else, including thanks, praise, questions, requests for sources, additional information or examples from other countries, typo or translation corrections, and polite disagreement or criticism, even on sensitive topics. Short generic praise such as "Great post, thanks for sharing" is OK. A word that merely looks like a banned word but is used normally (for example 시발점, a food name) is OK.
+
+If you are unsure, answer OK.`;
 
 export async function judge(env, text, model = DEFAULT_MODEL) {
   const result = await env.AI.run(model, {
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
-      { role: "user", content: `댓글:\n"""\n${text.slice(0, 1000)}\n"""` },
+      { role: "user", content: `Comment:\n"""\n${text.slice(0, 1000)}\n"""` },
     ],
     max_tokens: 8,
     temperature: 0,
@@ -24,7 +27,8 @@ export async function judge(env, text, model = DEFAULT_MODEL) {
   });
 
   const raw = extract(result);
-  return { verdict: /ABUSIVE/i.test(raw) ? "ABUSIVE" : "OK", raw };
+  const verdict = /ABUSIVE/i.test(raw) ? "ABUSIVE" : /SPAM/i.test(raw) ? "SPAM" : "OK";
+  return { verdict, raw };
 }
 
 // 모델마다 응답 모양이 달라 여러 자리를 차례로 본다(Qwen3는 답이 reasoning_content에 들어온다).

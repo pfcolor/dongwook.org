@@ -94,12 +94,17 @@ function escapeHtml(text) {
 
 // ---------- 목록 ----------
 
+// 숨긴 댓글의 답글은 함께 감춘다(부모가 공개 상태일 때만 답글을 보여 준다).
 async function list(url, env, cors) {
   const slug = url.searchParams.get("slug");
   if (!validSlug(slug)) return json({ error: "bad_slug" }, 400, cors);
 
   const { results } = await env.DB.prepare(
-    "SELECT id, name, body, created_at FROM comments WHERE slug = ? AND status = 'visible' ORDER BY created_at ASC LIMIT 200",
+    `SELECT c.id, c.parent_id, c.name, c.body, c.created_at, c.is_owner
+       FROM comments c
+       LEFT JOIN comments p ON p.id = c.parent_id
+      WHERE c.slug = ? AND c.status = 'visible' AND (c.parent_id IS NULL OR p.status = 'visible')
+      ORDER BY c.created_at ASC LIMIT 300`,
   )
     .bind(slug)
     .all();
@@ -120,10 +125,11 @@ async function create(request, env, ctx, cors) {
   }
 
   const slug = input.slug;
-  const name = String(input.name ?? "").trim().slice(0, MAX_NAME) || "익명";
+  const name = String(input.name ?? "").trim().slice(0, MAX_NAME);
   const body = String(input.body ?? "").trim();
 
   if (!validSlug(slug)) return json({ error: "bad_slug" }, 400, cors);
+  if (!name) return json({ error: "bad_name" }, 400, cors);
   if (body.length < 2 || body.length > MAX_BODY) return json({ error: "bad_body" }, 400, cors);
 
   // 봇이 채우는 숨은 칸. 채워져 있으면 저장하지 않고 성공한 척한다.
@@ -134,6 +140,16 @@ async function create(request, env, ctx, cors) {
   if (env.TURNSTILE_SECRET) {
     const ok = await verifyTurnstile(env.TURNSTILE_SECRET, input.turnstile, ip);
     if (!ok) return json({ error: "captcha" }, 400, cors);
+  }
+
+  // 답글이면 부모를 확인하고, 답글에 대한 답글은 맨 위 댓글 묶음에 붙인다(한 단계까지만).
+  let parentId = null;
+  if (input.parent_id) {
+    const parent = await env.DB.prepare("SELECT id, parent_id, slug, status FROM comments WHERE id = ?")
+      .bind(String(input.parent_id))
+      .first();
+    if (!parent || parent.slug !== slug || parent.status !== "visible") return json({ error: "bad_parent" }, 400, cors);
+    parentId = parent.parent_id ?? parent.id;
   }
 
   const ipHash = (await sha256Hex(`${env.HASH_SALT ?? ""}${ip}`)).slice(0, 32);
@@ -161,6 +177,7 @@ async function create(request, env, ctx, cors) {
     try {
       const { verdict } = await judge(env, `${name}\n${body}`);
       if (verdict === "ABUSIVE") ({ status, reason } = { status: "hidden", reason: "AI 판별: 욕설·시비" });
+      else if (verdict === "SPAM") ({ status, reason } = { status: "hidden", reason: "AI 판별: 스팸" });
     } catch (err) {
       console.error("AI 판별 실패(건너뜀)", err.message);
     }
@@ -169,15 +186,21 @@ async function create(request, env, ctx, cors) {
   const id = crypto.randomUUID();
 
   await env.DB.prepare(
-    "INSERT INTO comments (id, slug, name, body, status, reason, ip_hash, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+    "INSERT INTO comments (id, slug, name, body, status, reason, parent_id, is_owner, ip_hash, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, ?)",
   )
-    .bind(id, slug, name, body, status, reason, ipHash, now)
+    .bind(id, slug, name, body, status, reason, parentId, ipHash, now)
     .run();
 
-  ctx.waitUntil(notify(env, new URL(request.url).origin, { id, slug, name, body, status, reason }));
+  ctx.waitUntil(
+    notify(env, new URL(request.url).origin, { id, slug, name, body, status, reason, isReply: Boolean(parentId) }),
+  );
 
   if (status === "visible") {
-    return json({ status: "visible", comment: { id, name, body, created_at: now } }, 201, cors);
+    return json(
+      { status: "visible", comment: { id, parent_id: parentId, name, body, created_at: now, is_owner: 0 } },
+      201,
+      cors,
+    );
   }
   return json({ status: "held" }, 202, cors);
 }
@@ -199,23 +222,24 @@ async function notify(env, workerOrigin, c) {
   const link = async (action) => `${workerOrigin}/admin?id=${c.id}&action=${action}&t=${await sign(env, c.id, action)}`;
 
   const hidden = c.status === "hidden";
+  const kind = c.isReply ? "답글" : "댓글";
   const lines = [
     hidden ? `자동 숨김: ${c.reason}` : "공개됨",
     "",
     `글: ${env.SITE_ORIGIN}${c.slug}`,
-    `이름: ${c.name}`,
+    `이름: ${c.name.replace(/[\r\n]+/g, " ")}`,
     "",
     c.body,
     "",
     ...(hidden
       ? [`복원: ${await link("restore")}`, `삭제: ${await link("delete")}`]
-      : [`숨기기: ${await link("hide")}`, `삭제: ${await link("delete")}`]),
+      : [`답글 쓰기: ${await link("reply")}`, `숨기기: ${await link("hide")}`, `삭제: ${await link("delete")}`]),
   ];
 
   const message = {
     from: env.MAIL_FROM,
     to: env.NOTIFY_TO,
-    subject: `[댓글${hidden ? ", 자동 숨김" : ""}] ${c.slug}`,
+    subject: `[${kind}${hidden ? ", 자동 숨김" : ""}] ${c.slug}`,
     text: lines.join("\n"),
   };
 
@@ -237,6 +261,7 @@ const ACTIONS = {
   delete: { label: "삭제", done: "삭제했습니다." },
   hide: { label: "숨기기", done: "숨겼습니다." },
   restore: { label: "복원", done: "복원했습니다." },
+  reply: { label: "답글 올리기", done: "답글을 올렸습니다." },
 };
 
 async function admin(request, url, env) {
@@ -248,12 +273,29 @@ async function admin(request, url, env) {
   if (!ACTIONS[action] || !id) return page("잘못된 링크입니다.", 400);
   if (!timingSafeEqual(token, await sign(env, id, action))) return page("링크가 올바르지 않습니다.", 403);
 
-  const comment = await env.DB.prepare("SELECT slug, name, body, status FROM comments WHERE id = ?").bind(id).first();
+  const comment = await env.DB.prepare("SELECT slug, name, body, status, parent_id FROM comments WHERE id = ?")
+    .bind(id)
+    .first();
   if (!comment) return page("이미 삭제되었거나 없는 댓글입니다.", 404);
 
   if (request.method === "POST") {
-    if (action === "delete") await env.DB.prepare("DELETE FROM comments WHERE id = ?").bind(id).run();
-    else {
+    if (action === "delete") {
+      // 답글도 함께 지운다.
+      await env.DB.prepare("DELETE FROM comments WHERE id = ? OR parent_id = ?").bind(id, id).run();
+    } else if (action === "reply") {
+      const reply = (params.get("reply") ?? "").trim();
+      if (reply.length < 1 || reply.length > MAX_BODY) return page("답글은 1자 이상 2,000자 이하로 써 주세요.", 400);
+      await env.DB.prepare(
+        "INSERT INTO comments (id, slug, name, body, status, reason, parent_id, is_owner, ip_hash, created_at) VALUES (?, ?, ?, ?, 'visible', NULL, ?, 1, 'owner', ?)",
+      )
+        .bind(crypto.randomUUID(), comment.slug, env.OWNER_NAME || "글쓴이", reply, comment.parent_id ?? id, Date.now())
+        .run();
+      return page(
+        `<p>${ACTIONS.reply.done}</p><p><a href="${escapeHtml(env.SITE_ORIGIN + comment.slug)}">글로 가기</a></p>`,
+        200,
+        true,
+      );
+    } else {
       const next = action === "hide" ? "hidden" : "visible";
       await env.DB.prepare("UPDATE comments SET status = ?, reason = ? WHERE id = ?")
         .bind(next, action === "hide" ? "직접 숨김" : null, id)
@@ -262,6 +304,8 @@ async function admin(request, url, env) {
     return page(ACTIONS[action].done, 200);
   }
 
+  const replyField =
+    action === "reply" ? `<textarea name="reply" rows="6" maxlength="${MAX_BODY}" required autofocus></textarea>` : "";
   const form = `
     <p><b>${escapeHtml(comment.name)}</b> · ${escapeHtml(comment.slug)} · ${comment.status === "visible" ? "공개" : "숨김"}</p>
     <blockquote>${escapeHtml(comment.body).replace(/\n/g, "<br>")}</blockquote>
@@ -269,6 +313,7 @@ async function admin(request, url, env) {
       <input type="hidden" name="id" value="${escapeHtml(id)}">
       <input type="hidden" name="action" value="${escapeHtml(action)}">
       <input type="hidden" name="t" value="${escapeHtml(token)}">
+      ${replyField}
       <button type="submit">${ACTIONS[action].label}</button>
     </form>`;
   return page(form, 200, true);
@@ -279,7 +324,7 @@ function page(content, status, raw = false) {
   return new Response(
     `<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex"><title>댓글 관리</title>
-<style>body{font:16px/1.6 system-ui,sans-serif;max-width:32rem;margin:3rem auto;padding:0 1rem}blockquote{margin:1rem 0;padding-left:1rem;border-left:3px solid #ccc;white-space:pre-wrap}button{font:inherit;padding:.5rem 1.2rem}</style>
+<style>body{font:16px/1.6 system-ui,sans-serif;max-width:32rem;margin:3rem auto;padding:0 1rem}blockquote{margin:1rem 0;padding-left:1rem;border-left:3px solid #ccc;white-space:pre-wrap}textarea{display:block;width:100%;box-sizing:border-box;margin-bottom:1rem;font:inherit;padding:.5rem}button{font:inherit;padding:.5rem 1.2rem}</style>
 ${body}</html>`,
     { status, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" } },
   );

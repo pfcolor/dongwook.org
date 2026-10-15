@@ -8,7 +8,8 @@
   <h2 class="mono">comments</h2>
   <ul class="comment-list" aria-live="polite"></ul>
   <form class="comment-form" hidden>
-    <input class="comment-name" type="text" name="name" maxlength="30" autocomplete="nickname">
+    <p class="comment-replying" hidden><span class="comment-replying-name"></span> <button type="button" class="mono"></button></p>
+    <input class="comment-name" type="text" name="name" maxlength="30" autocomplete="nickname" required>
     <textarea class="comment-body" name="body" rows="4" maxlength="2000" required></textarea>
     <input class="comment-trap" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
     <div class="comment-captcha"></div>
