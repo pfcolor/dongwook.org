@@ -7,6 +7,10 @@ const RATE_PER_MINUTE = 3;
 const RATE_PER_HOUR = 20;
 // 메일 링크가 유효한 기간. 서명에 만료 시각이 들어가 있어 링크를 고쳐 연장할 수 없다.
 const LINK_TTL_MS = 14 * 24 * 60 * 60 * 1000;
+// 메일로 따로 요청한 목록 링크는 바로 쓰는 용도라 짧게 둔다.
+const REQUESTED_LIST_TTL_MS = 2 * 60 * 60 * 1000;
+const LIST_REQUEST_INTERVAL_MS = 10 * 60 * 1000;
+const PAGE_SIZE = 50;
 
 export default {
   async fetch(request, env, ctx) {
@@ -19,6 +23,7 @@ export default {
       if (url.pathname === "/comments" && request.method === "GET") return await list(url, env, cors);
       if (url.pathname === "/comments" && request.method === "POST") return await create(request, env, ctx, cors);
       if (url.pathname === "/admin") return await admin(request, url, env);
+      if (url.pathname === "/manage") return await manage(request, url, env);
       // 로컬 개발에서만 열리는 판별 시험용 경로(배포본에는 DEV가 없어 404)
       if (url.pathname === "/_ai-eval" && request.method === "POST" && env.DEV === "1") {
         const { model, texts } = await request.json();
@@ -220,8 +225,8 @@ async function verifyTurnstile(secret, token, ip) {
 
 // ---------- 알림 메일 ----------
 
-async function adminLink(env, origin, id, action) {
-  const exp = Date.now() + LINK_TTL_MS;
+async function adminLink(env, origin, id, action, ttl = LINK_TTL_MS) {
+  const exp = Date.now() + ttl;
   return `${origin}/admin?id=${id}&action=${action}&e=${exp}&t=${await sign(env, id, action, exp)}`;
 }
 
@@ -255,6 +260,8 @@ async function notify(env, workerOrigin, c) {
     ...(hidden
       ? [`복원: ${await link("restore")}`, `삭제: ${await link("delete")}`]
       : [`답글 쓰기: ${await link("reply")}`, `숨기기: ${await link("hide")}`, `삭제: ${await link("delete")}`]),
+    "",
+    `전체 목록: ${await adminLink(env, workerOrigin, "list", "list")}`,
   ];
 
   await sendMail(env, `[${kind}${hidden ? ", 자동 숨김" : ""}] ${c.slug}`, lines.join("\n"));
@@ -273,6 +280,8 @@ async function notifyOwnerReply(env, workerOrigin, c) {
     `수정: ${await link("edit")}`,
     `숨기기: ${await link("hide")}`,
     `삭제: ${await link("delete")}`,
+    "",
+    `전체 목록: ${await adminLink(env, workerOrigin, "list", "list")}`,
   ];
   await sendMail(env, `[글쓴이 답글] ${c.slug}`, lines.join("\n"));
 }
@@ -286,6 +295,7 @@ const ACTIONS = {
   restore: { label: "복원", done: "복원했습니다." },
   reply: { label: "답글 올리기", done: "답글을 올렸습니다." },
   edit: { label: "수정 저장", done: "수정했습니다." },
+  list: { label: "목록", done: "" },
 };
 
 async function admin(request, url, env) {
@@ -298,7 +308,12 @@ async function admin(request, url, env) {
 
   if (!ACTIONS[action] || !id || !/^\d{10,15}$/.test(exp)) return page("잘못된 링크입니다.", 400);
   if (!timingSafeEqual(token, await sign(env, id, action, exp))) return page("링크가 올바르지 않습니다.", 403);
-  if (Number(exp) < Date.now()) return page("링크가 만료되었습니다. 새 알림 메일의 링크를 쓰거나, 필요하면 다시 요청해 주세요.", 403);
+  if (Number(exp) < Date.now()) return page(`링크가 만료되었습니다. <a href="${escapeHtml(origin)}/manage">관리 링크 다시 받기</a>`, 403, true);
+
+  if (action === "list") {
+    if (id !== "list" || request.method !== "GET") return page("잘못된 요청입니다.", 400);
+    return listPage(env, origin, params, exp, token);
+  }
 
   const comment = await env.DB.prepare("SELECT slug, name, body, status, parent_id, is_owner FROM comments WHERE id = ?")
     .bind(id)
@@ -309,6 +324,8 @@ async function admin(request, url, env) {
   if (action === "edit" && !comment.is_owner) return page("글쓴이 답글만 수정할 수 있습니다.", 403);
 
   const postLink = `<p><a href="${escapeHtml(env.SITE_ORIGIN + comment.slug)}">글로 가기</a></p>`;
+  const listHref = await adminLink(env, origin, "list", "list");
+  const backLink = `<p><a href="${escapeHtml(listHref)}">목록으로</a></p>`;
 
   if (request.method === "POST") {
     if (action === "delete") {
@@ -324,12 +341,12 @@ async function admin(request, url, env) {
         .bind(replyId, comment.slug, env.OWNER_NAME || "글쓴이", reply, comment.parent_id ?? id, Date.now())
         .run();
       await notifyOwnerReply(env, origin, { id: replyId, slug: comment.slug, body: reply });
-      return page(`<p>${ACTIONS.reply.done} 수정·숨김·삭제 링크를 메일로 보냈습니다.</p>${postLink}`, 200, true);
+      return page(`<p>${ACTIONS.reply.done} 수정·숨김·삭제 링크를 메일로 보냈습니다.</p>${postLink}${backLink}`, 200, true);
     } else if (action === "edit") {
       const text = (params.get("reply") ?? "").trim();
       if (text.length < 1 || text.length > MAX_BODY) return page("답글은 1자 이상 2,000자 이하로 써 주세요.", 400);
       await env.DB.prepare("UPDATE comments SET body = ? WHERE id = ?").bind(text, id).run();
-      return page(`<p>${ACTIONS.edit.done}</p>${postLink}`, 200, true);
+      return page(`<p>${ACTIONS.edit.done}</p>${postLink}${backLink}`, 200, true);
     } else {
       const next = action === "hide" ? "hidden" : "visible";
       await env.DB.prepare("UPDATE comments SET status = ?, reason = ? WHERE id = ?")
@@ -338,10 +355,10 @@ async function admin(request, url, env) {
       // 직접 숨긴 뒤에도 되돌릴 수 있게 복원 링크를 보여 준다.
       if (action === "hide") {
         const restore = await adminLink(env, origin, id, "restore");
-        return page(`<p>${ACTIONS.hide.done}</p><p><a href="${escapeHtml(restore)}">복원하기</a></p>`, 200, true);
+        return page(`<p>${ACTIONS.hide.done}</p><p><a href="${escapeHtml(restore)}">복원하기</a></p>${backLink}`, 200, true);
       }
     }
-    return page(ACTIONS[action].done, 200);
+    return page(`<p>${ACTIONS[action].done}</p>${backLink}`, 200, true);
   }
 
   const textField =
@@ -362,12 +379,102 @@ async function admin(request, url, env) {
   return page(form, 200, true);
 }
 
-function page(content, status, raw = false) {
+// ---------- 관리 화면(목록) ----------
+// 목록 링크로 들어오면 댓글마다 새 링크(14일)를 만들어 보여 준다. 알림 메일의 링크가 만료돼도 여기서 처리할 수 있다.
+
+const ROW_LABELS = { reply: "답글", edit: "수정", hide: "숨기기", restore: "복원", delete: "삭제" };
+
+function formatTime(ms) {
+  return new Date(ms).toLocaleString("sv-SE", { timeZone: "Asia/Seoul" }).slice(0, 16);
+}
+
+async function listPage(env, origin, params, exp, token) {
+  const view = params.get("view") === "hidden" ? "hidden" : "all";
+  const offset = Math.max(0, Number.parseInt(params.get("offset") ?? "0", 10) || 0);
+  const where = view === "hidden" ? "WHERE status = 'hidden'" : "";
+
+  const { results } = await env.DB.prepare(
+    `SELECT id, slug, name, body, status, reason, parent_id, is_owner, created_at
+       FROM comments ${where} ORDER BY created_at DESC LIMIT ? OFFSET ?`,
+  )
+    .bind(PAGE_SIZE + 1, offset)
+    .all();
+  const rows = results.slice(0, PAGE_SIZE);
+  const more = results.length > PAGE_SIZE;
+
+  const base = `${origin}/admin?id=list&action=list&e=${exp}&t=${token}`;
+  const nav = [
+    `<a href="${escapeHtml(base)}">전체</a>`,
+    `<a href="${escapeHtml(base)}&amp;view=hidden">숨김만</a>`,
+  ];
+
+  const items = await Promise.all(
+    rows.map(async (c) => {
+      const actions = c.is_owner
+        ? ["edit", c.status === "visible" ? "hide" : "restore", "delete"]
+        : c.status === "visible"
+          ? ["reply", "hide", "delete"]
+          : ["restore", "delete"];
+      const links = await Promise.all(
+        actions.map(async (a) => `<a href="${escapeHtml(await adminLink(env, origin, c.id, a))}">${ROW_LABELS[a]}</a>`),
+      );
+      const flags = [
+        c.is_owner ? "글쓴이" : null,
+        c.parent_id ? "답글" : null,
+        c.status === "hidden" ? `숨김${c.reason ? ` (${c.reason})` : ""}` : null,
+      ].filter(Boolean);
+      const shown = c.body.length > 300 ? `${c.body.slice(0, 300)}…` : c.body;
+      return `<div class="c${c.status === "hidden" ? " hid" : ""}">
+        <div class="m">${formatTime(c.created_at)} · ${escapeHtml(c.slug)} · <b>${escapeHtml(c.name)}</b>${flags.length ? ` · ${escapeHtml(flags.join(" · "))}` : ""}</div>
+        <div class="b">${escapeHtml(shown)}</div>
+        <div class="a">${links.join("")}</div>
+      </div>`;
+    }),
+  );
+
+  const pager = [
+    offset > 0
+      ? `<a href="${escapeHtml(base)}&amp;view=${view}&amp;offset=${Math.max(0, offset - PAGE_SIZE)}">← 이전</a>`
+      : "",
+    more ? `<a href="${escapeHtml(base)}&amp;view=${view}&amp;offset=${offset + PAGE_SIZE}">다음 →</a>` : "",
+  ].join("");
+
+  const title = view === "hidden" ? "숨긴 댓글" : "전체 댓글";
+  const body = `<h2>${title}</h2><nav>${nav.join("")}</nav>${
+    items.length ? items.join("") : "<p>댓글이 없습니다.</p>"
+  }<nav>${pager}</nav>`;
+  return page(body, 200, true, true);
+}
+
+// 관리 링크를 메일로 다시 받는 화면. 받는 사람은 항상 알림 메일 주소 하나뿐이고, 요청은 10분에 한 번만 받는다.
+async function manage(request, url, env) {
+  if (request.method === "POST") {
+    const row = await env.DB.prepare("SELECT value FROM meta WHERE key = 'list_link_sent'").first();
+    if (row && Date.now() - Number(row.value) < LIST_REQUEST_INTERVAL_MS) {
+      return page("방금 링크를 보냈습니다. 메일함을 확인하거나 10분 뒤에 다시 요청해 주세요.", 429);
+    }
+    await env.DB.prepare(
+      "INSERT INTO meta (key, value) VALUES ('list_link_sent', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+    )
+      .bind(String(Date.now()))
+      .run();
+    const link = await adminLink(env, url.origin, "list", "list", REQUESTED_LIST_TTL_MS);
+    await sendMail(env, "[댓글 관리] 목록 링크", `아래 링크는 2시간 동안 쓸 수 있습니다.\n\n${link}`);
+    return page("관리 링크를 메일로 보냈습니다. 받은편지함을 확인해 주세요.", 200);
+  }
+  return page(
+    `<p>댓글 관리 링크를 알림 메일 주소로 보냅니다.</p><form method="post"><button type="submit">메일로 받기</button></form>`,
+    200,
+    true,
+  );
+}
+
+function page(content, status, raw = false, wide = false) {
   const body = raw ? content : `<p>${escapeHtml(content)}</p>`;
   return new Response(
     `<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex"><title>댓글 관리</title>
-<style>body{font:16px/1.6 system-ui,sans-serif;max-width:32rem;margin:3rem auto;padding:0 1rem}blockquote{margin:1rem 0;padding-left:1rem;border-left:3px solid #ccc;white-space:pre-wrap}textarea{display:block;width:100%;box-sizing:border-box;margin-bottom:1rem;font:inherit;padding:.5rem}button{font:inherit;padding:.5rem 1.2rem}</style>
+<style>body{font:16px/1.6 system-ui,sans-serif;max-width:${wide ? "46rem" : "32rem"};margin:3rem auto;padding:0 1rem}.c{padding:.8rem 0;border-bottom:1px solid #ddd}.m{font-size:.85rem;color:#666}.b{margin:.3rem 0;white-space:pre-wrap;overflow-wrap:anywhere}.a a{margin-right:1rem}.hid{opacity:.6}nav a{margin-right:1rem}blockquote{margin:1rem 0;padding-left:1rem;border-left:3px solid #ccc;white-space:pre-wrap}textarea{display:block;width:100%;box-sizing:border-box;margin-bottom:1rem;font:inherit;padding:.5rem}button{font:inherit;padding:.5rem 1.2rem}</style>
 ${body}</html>`,
     { status, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" } },
   );

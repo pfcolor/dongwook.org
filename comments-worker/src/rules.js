@@ -1,15 +1,8 @@
 // 자동 숨김 규칙. 걸린 댓글은 지우지 않고 hidden으로 저장하며, 메일의 복원 링크로 되살릴 수 있다.
 // 오인이 생길 수 있는 단어는 넣지 않는다(예: '미친', 'crypto', 'loan'). 목록은 필요할 때 여기에 더한다.
 
-// 한글과 영문 소문자만 남겨 비교한다. 공백·숫자·기호를 끼워 넣은 변형('시1발', 'f.u.c.k')도 잡으려는 것이다.
-const PROFANITY = [
-  // (단어 목록은 저장소에서 제거했습니다)
-];
-
-// 광고·사기·성인 스팸에서 거의 틀림없이 나오는 말만 넣는다.
-const SPAM_WORDS = [
-  // (단어 목록은 저장소에서 제거했습니다)
-];
+// 단어 목록은 공개 저장소에 올리지 않는 로컬 파일에 있다. src/wordlists.example.js를 복사해 wordlists.local.js를 만든다.
+import { PROFANITY, SPAM_WORDS } from "./wordlists.local.js";
 
 const URL_PATTERN = /(https?:\/\/|www\.|[a-z0-9-]+\.(com|net|org|io|kr|co|me|ru|xyz|top|info|ly|site|online|shop|club|vip|bet|cc|biz)\b)/i;
 const EMAIL_PATTERN = /[\w.+-]+@[\w-]+\.[\w.-]+/;

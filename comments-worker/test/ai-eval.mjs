@@ -1,7 +1,14 @@
 // 사용법: wrangler dev(포트 8787)를 켠 뒤 `node test/ai-eval.mjs [모델ID ...]`
-import { readFileSync } from "node:fs";
+// 시험 세트(test/eval-set.local.json)는 욕설 예시가 들어 있어 공개 저장소에 올리지 않는다(.gitignore).
+// 형식: [{ "label": "OK" | "ABUSIVE" | "SPAM" | "?", "text": "댓글 내용" }, ...]
+import { existsSync, readFileSync } from "node:fs";
 
-const set = JSON.parse(readFileSync(new URL("./eval-set.json", import.meta.url)));
+const setPath = new URL("./eval-set.local.json", import.meta.url);
+if (!existsSync(setPath)) {
+  console.error("test/eval-set.local.json이 없습니다. 위 형식으로 만들어 두세요(저장소에는 없습니다).");
+  process.exit(1);
+}
+const set = JSON.parse(readFileSync(setPath));
 const models = process.argv.slice(2);
 if (!models.length) models.push("@cf/qwen/qwen3-30b-a3b-fp8");
 

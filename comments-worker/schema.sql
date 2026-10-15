@@ -17,3 +17,8 @@ CREATE TABLE IF NOT EXISTS comments (
 CREATE INDEX IF NOT EXISTS idx_comments_slug ON comments (slug, status, created_at);
 CREATE INDEX IF NOT EXISTS idx_comments_ip ON comments (ip_hash, created_at);
 CREATE INDEX IF NOT EXISTS idx_comments_parent ON comments (parent_id);
+
+CREATE TABLE IF NOT EXISTS meta (
+  key   TEXT PRIMARY KEY,
+  value TEXT NOT NULL
+);

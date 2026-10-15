@@ -30,3 +30,7 @@ node_modules/
 # 댓글 Worker 로컬 값과 개발 캐시
 comments-worker/.dev.vars
 comments-worker/.wrangler/
+
+# 욕설·스팸 단어 목록과 AI 시험 세트(욕설 예시가 들어 있어 공개 저장소에 올리지 않음)
+comments-worker/src/wordlists.local.js
+comments-worker/test/eval-set.local.json
