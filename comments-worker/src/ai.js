@@ -3,6 +3,10 @@
 
 export const DEFAULT_MODEL = "@cf/qwen/qwen3-30b-a3b-fp8";
 
+// AI에 넘기는 최대 글자 수. 이름(최대 30자), 줄바꿈, 본문(최대 2000자)이 통째로 들어가는 크기다.
+// 본문 한도(index.js의 MAX_BODY)를 늘리면 이 값도 같이 늘려야, 뒤쪽이 검사를 받지 않는 일이 없다.
+const MAX_INPUT_CHARS = 2100;
+
 // 영어 스팸이 많을 것이라 지시문은 영어로 쓰고, 댓글은 어떤 언어든 같은 기준으로 본다.
 const SYSTEM_PROMPT = `You moderate comments on a personal blog about society, religion, language and books. Comments may be in Korean or English (or other languages). Reply with exactly one word: OK, ABUSIVE, or SPAM.
 
@@ -21,7 +25,7 @@ export async function judge(env, text, model = DEFAULT_MODEL) {
   const result = await env.AI.run(model, {
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
-      { role: "user", content: `Comment:\n"""\n${text.slice(0, 1000)}\n"""` },
+      { role: "user", content: `Comment:\n"""\n${text.slice(0, MAX_INPUT_CHARS)}\n"""` },
     ],
     max_tokens: 8,
     temperature: 0,

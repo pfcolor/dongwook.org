@@ -514,6 +514,11 @@ pre code {
 
 .comment-form textarea {
   resize: vertical;
+  /* 처음 크기(4줄)보다 작게 줄일 수 없고, 8줄(2배)까지만 늘릴 수 있다. 줄 높이 단위(lh)를 모르는 브라우저를 위해 rem 값을 먼저 둔다. */
+  min-height: calc(7.65rem + 2px);
+  max-height: calc(14.3rem + 2px);
+  min-height: calc(4lh + 1rem + 2px);
+  max-height: calc(8lh + 1rem + 2px);
 }
 
 .comment-form input:focus,
@@ -531,8 +536,19 @@ pre code {
 .comment-actions {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 1rem;
+}
+
+/* 글자 수 표시: 한도의 90%에 가까워지면 글자색이 진해진다 */
+.comment-count {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.comment-count.near {
+  color: var(--text);
 }
 
 .comment-note,

@@ -63,6 +63,18 @@
 
   form.querySelector(".comment-name").placeholder = t.name;
   form.querySelector(".comment-body").placeholder = t.body;
+
+  // 글자 수 표시. 한도는 입력칸의 maxlength에서 읽는다(서버 한도와 같은 값으로 맞춰 둠).
+  var bodyField = form.elements.body;
+  var counter = form.querySelector(".comment-count");
+  function updateCount() {
+    var max = bodyField.maxLength;
+    var len = bodyField.value.length;
+    counter.textContent = len + " / " + max;
+    counter.classList.toggle("near", len >= max * 0.9);
+  }
+  bodyField.addEventListener("input", updateCount);
+  updateCount();
   button.textContent = t.submit;
 
   function formatDate(ms) {
@@ -149,7 +161,7 @@
     replyBar.hidden = false;
     var body = form.elements.body;
     // 답글에 대한 답글이면 @이름을 붙여 누구에게 하는 말인지 남긴다.
-    if (c.parent_id && !body.value) body.value = "@" + c.name + " ";
+    if (c.parent_id && !body.value) { body.value = "@" + c.name + " "; updateCount(); }
     form.scrollIntoView({ behavior: "smooth", block: "center" });
     body.focus();
   }
@@ -209,6 +221,7 @@
           append(r.data.comment);
           setStatus(t.visible);
           form.elements.body.value = "";
+          updateCount();
           cancelReply();
         } else if (r.res.ok) {
           // 보류: 이유를 알려 주고, 쓴 내용은 그대로 둬서 고쳐 다시 보낼 수 있게 한다.
