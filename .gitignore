@@ -26,3 +26,7 @@ CLAUDE.md
 *.log
 Thumbs.db
 node_modules/
+
+# 댓글 Worker 로컬 값과 개발 캐시
+comments-worker/.dev.vars
+comments-worker/.wrangler/

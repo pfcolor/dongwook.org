@@ -1,0 +1,24 @@
+{%- comment -%} 글 아래 댓글창. _config.yml의 comments_api가 비어 있으면 아무것도 출력하지 않는다. {%- endcomment -%}
+{%- if site.comments_api and site.comments_api != "" %}
+<section class="comments" id="comments"
+  data-api="{{ site.comments_api }}"
+  data-slug="{{ page.url }}"
+  data-lang="{{ page.lang | default: site.lang }}"
+  {%- if site.turnstile_sitekey and site.turnstile_sitekey != "" %} data-sitekey="{{ site.turnstile_sitekey }}"{% endif %}>
+  <h2 class="mono">comments</h2>
+  <ul class="comment-list" aria-live="polite"></ul>
+  <form class="comment-form" hidden>
+    <input class="comment-name" type="text" name="name" maxlength="30" autocomplete="nickname">
+    <textarea class="comment-body" name="body" rows="4" maxlength="2000" required></textarea>
+    <input class="comment-trap" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="comment-captcha"></div>
+    <div class="comment-actions">
+      <span class="comment-note"></span>
+      <button type="submit"></button>
+    </div>
+    <p class="comment-status" role="status"></p>
+  </form>
+  <noscript><p class="comment-note">댓글을 보거나 남기려면 자바스크립트가 필요합니다.</p></noscript>
+</section>
+<script src="{{ '/assets/js/comments.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+{%- endif %}

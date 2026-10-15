@@ -415,6 +415,119 @@ pre code {
   color: var(--text);
 }
 
+/* 댓글 */
+.comments {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.comments h2 {
+  margin: 0 0 1rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.comment-list {
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.comment-list li {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.comment-list p {
+  margin: 0.2rem 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.comment-head {
+  display: flex;
+  gap: 0.8rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.comment-empty {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.comment-form input[type="text"],
+.comment-form textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0.6rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.comment-form textarea {
+  resize: vertical;
+}
+
+.comment-form input:focus,
+.comment-form textarea:focus {
+  outline: none;
+  border-color: var(--muted);
+}
+
+/* 봇이 채우는 숨은 칸 */
+.comment-trap {
+  position: absolute !important;
+  left: -9999px;
+}
+
+.comment-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.comment-note,
+.comment-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.comment-status {
+  min-height: 1.2em;
+  margin-top: 0.6rem;
+}
+
+.comment-form button {
+  padding: 0.35rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.comment-form button:hover:not(:disabled) {
+  border-color: var(--muted);
+}
+
+.comment-form button:disabled {
+  color: var(--muted);
+  cursor: default;
+}
+
 /* 검색 */
 .search-input {
   width: 100%;

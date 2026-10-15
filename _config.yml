@@ -17,6 +17,11 @@ timezone: Asia/Seoul
 # Google Analytics 측정 ID(G-XXXXXXXXXX). 비워 두면 출력하지 않는다(production 빌드에서만 켜짐).
 google_analytics: "G-ZM7YWXMLYR"
 
+# 댓글 API 주소(comments-worker). 비워 두면 댓글창을 출력하지 않는다.
+comments_api: "https://dongwook-comments.dongwook.workers.dev"
+# Cloudflare Turnstile 사이트 키(선택). 비워 두면 확인 위젯 없이 동작한다.
+turnstile_sitekey: ""
+
 # quotes 한 쪽에 보여 줄 인용 수(_plugins/quotes-pagination.rb). 넘으면 /quotes/page/N/으로 나뉜다.
 quotes_per_page: 30
 
@@ -65,3 +70,4 @@ exclude:
   - Gemfile.lock
   - vendor
   - node_modules
+  - comments-worker
