@@ -5,6 +5,8 @@ const MAX_NAME = 30;
 const MAX_BODY = 2000;
 const RATE_PER_MINUTE = 3;
 const RATE_PER_HOUR = 20;
+// 메일 링크가 유효한 기간. 서명에 만료 시각이 들어가 있어 링크를 고쳐 연장할 수 없다.
+const LINK_TTL_MS = 14 * 24 * 60 * 60 * 1000;
 
 export default {
   async fetch(request, env, ctx) {
@@ -69,7 +71,7 @@ async function sha256Hex(text) {
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-async function sign(env, id, action) {
+async function sign(env, id, action, exp) {
   const key = await crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(env.ADMIN_SECRET),
@@ -77,7 +79,7 @@ async function sign(env, id, action) {
     false,
     ["sign"],
   );
-  const mac = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(`${id}:${action}`));
+  const mac = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(`${id}:${action}:${exp}`));
   return [...new Uint8Array(mac)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
@@ -218,8 +220,27 @@ async function verifyTurnstile(secret, token, ip) {
 
 // ---------- 알림 메일 ----------
 
+async function adminLink(env, origin, id, action) {
+  const exp = Date.now() + LINK_TTL_MS;
+  return `${origin}/admin?id=${id}&action=${action}&e=${exp}&t=${await sign(env, id, action, exp)}`;
+}
+
+async function sendMail(env, subject, text) {
+  const message = { from: env.MAIL_FROM, to: env.NOTIFY_TO, subject, text };
+  if (!env.EMAIL || !env.NOTIFY_TO) {
+    console.log("메일 설정이 없어 콘솔에만 남깁니다.\n" + text);
+    return;
+  }
+  try {
+    await env.EMAIL.send(message);
+  } catch (err) {
+    console.error("알림 메일 발송 실패", err.code, err.message);
+  }
+}
+
+// 독자가 남긴 댓글·답글 알림
 async function notify(env, workerOrigin, c) {
-  const link = async (action) => `${workerOrigin}/admin?id=${c.id}&action=${action}&t=${await sign(env, c.id, action)}`;
+  const link = (action) => adminLink(env, workerOrigin, c.id, action);
 
   const hidden = c.status === "hidden";
   const kind = c.isReply ? "답글" : "댓글";
@@ -236,22 +257,24 @@ async function notify(env, workerOrigin, c) {
       : [`답글 쓰기: ${await link("reply")}`, `숨기기: ${await link("hide")}`, `삭제: ${await link("delete")}`]),
   ];
 
-  const message = {
-    from: env.MAIL_FROM,
-    to: env.NOTIFY_TO,
-    subject: `[${kind}${hidden ? ", 자동 숨김" : ""}] ${c.slug}`,
-    text: lines.join("\n"),
-  };
+  await sendMail(env, `[${kind}${hidden ? ", 자동 숨김" : ""}] ${c.slug}`, lines.join("\n"));
+}
 
-  if (!env.EMAIL || !env.NOTIFY_TO) {
-    console.log("메일 설정이 없어 콘솔에만 남깁니다.\n" + message.text);
-    return;
-  }
-  try {
-    await env.EMAIL.send(message);
-  } catch (err) {
-    console.error("알림 메일 발송 실패", err.code, err.message);
-  }
+// 글쓴이가 올린 답글에 대한 확인 메일. 나중에 고치거나 숨기거나 지울 수 있게 링크를 남긴다.
+async function notifyOwnerReply(env, workerOrigin, c) {
+  const link = (action) => adminLink(env, workerOrigin, c.id, action);
+  const lines = [
+    "글쓴이 답글을 올렸습니다.",
+    "",
+    `글: ${env.SITE_ORIGIN}${c.slug}`,
+    "",
+    c.body,
+    "",
+    `수정: ${await link("edit")}`,
+    `숨기기: ${await link("hide")}`,
+    `삭제: ${await link("delete")}`,
+  ];
+  await sendMail(env, `[글쓴이 답글] ${c.slug}`, lines.join("\n"));
 }
 
 // ---------- 관리(메일 링크) ----------
@@ -262,6 +285,7 @@ const ACTIONS = {
   hide: { label: "숨기기", done: "숨겼습니다." },
   restore: { label: "복원", done: "복원했습니다." },
   reply: { label: "답글 올리기", done: "답글을 올렸습니다." },
+  edit: { label: "수정 저장", done: "수정했습니다." },
 };
 
 async function admin(request, url, env) {
@@ -269,14 +293,22 @@ async function admin(request, url, env) {
   const id = params.get("id") ?? "";
   const action = params.get("action") ?? "";
   const token = params.get("t") ?? "";
+  const exp = params.get("e") ?? "";
+  const origin = url.origin;
 
-  if (!ACTIONS[action] || !id) return page("잘못된 링크입니다.", 400);
-  if (!timingSafeEqual(token, await sign(env, id, action))) return page("링크가 올바르지 않습니다.", 403);
+  if (!ACTIONS[action] || !id || !/^\d{10,15}$/.test(exp)) return page("잘못된 링크입니다.", 400);
+  if (!timingSafeEqual(token, await sign(env, id, action, exp))) return page("링크가 올바르지 않습니다.", 403);
+  if (Number(exp) < Date.now()) return page("링크가 만료되었습니다. 새 알림 메일의 링크를 쓰거나, 필요하면 다시 요청해 주세요.", 403);
 
-  const comment = await env.DB.prepare("SELECT slug, name, body, status, parent_id FROM comments WHERE id = ?")
+  const comment = await env.DB.prepare("SELECT slug, name, body, status, parent_id, is_owner FROM comments WHERE id = ?")
     .bind(id)
     .first();
   if (!comment) return page("이미 삭제되었거나 없는 댓글입니다.", 404);
+
+  // 수정은 글쓴이 답글에만 허용한다(독자 댓글을 고쳐 쓰는 일이 없도록).
+  if (action === "edit" && !comment.is_owner) return page("글쓴이 답글만 수정할 수 있습니다.", 403);
+
+  const postLink = `<p><a href="${escapeHtml(env.SITE_ORIGIN + comment.slug)}">글로 가기</a></p>`;
 
   if (request.method === "POST") {
     if (action === "delete") {
@@ -285,35 +317,46 @@ async function admin(request, url, env) {
     } else if (action === "reply") {
       const reply = (params.get("reply") ?? "").trim();
       if (reply.length < 1 || reply.length > MAX_BODY) return page("답글은 1자 이상 2,000자 이하로 써 주세요.", 400);
+      const replyId = crypto.randomUUID();
       await env.DB.prepare(
         "INSERT INTO comments (id, slug, name, body, status, reason, parent_id, is_owner, ip_hash, created_at) VALUES (?, ?, ?, ?, 'visible', NULL, ?, 1, 'owner', ?)",
       )
-        .bind(crypto.randomUUID(), comment.slug, env.OWNER_NAME || "글쓴이", reply, comment.parent_id ?? id, Date.now())
+        .bind(replyId, comment.slug, env.OWNER_NAME || "글쓴이", reply, comment.parent_id ?? id, Date.now())
         .run();
-      return page(
-        `<p>${ACTIONS.reply.done}</p><p><a href="${escapeHtml(env.SITE_ORIGIN + comment.slug)}">글로 가기</a></p>`,
-        200,
-        true,
-      );
+      await notifyOwnerReply(env, origin, { id: replyId, slug: comment.slug, body: reply });
+      return page(`<p>${ACTIONS.reply.done} 수정·숨김·삭제 링크를 메일로 보냈습니다.</p>${postLink}`, 200, true);
+    } else if (action === "edit") {
+      const text = (params.get("reply") ?? "").trim();
+      if (text.length < 1 || text.length > MAX_BODY) return page("답글은 1자 이상 2,000자 이하로 써 주세요.", 400);
+      await env.DB.prepare("UPDATE comments SET body = ? WHERE id = ?").bind(text, id).run();
+      return page(`<p>${ACTIONS.edit.done}</p>${postLink}`, 200, true);
     } else {
       const next = action === "hide" ? "hidden" : "visible";
       await env.DB.prepare("UPDATE comments SET status = ?, reason = ? WHERE id = ?")
         .bind(next, action === "hide" ? "직접 숨김" : null, id)
         .run();
+      // 직접 숨긴 뒤에도 되돌릴 수 있게 복원 링크를 보여 준다.
+      if (action === "hide") {
+        const restore = await adminLink(env, origin, id, "restore");
+        return page(`<p>${ACTIONS.hide.done}</p><p><a href="${escapeHtml(restore)}">복원하기</a></p>`, 200, true);
+      }
     }
     return page(ACTIONS[action].done, 200);
   }
 
-  const replyField =
-    action === "reply" ? `<textarea name="reply" rows="6" maxlength="${MAX_BODY}" required autofocus></textarea>` : "";
+  const textField =
+    action === "reply" || action === "edit"
+      ? `<textarea name="reply" rows="6" maxlength="${MAX_BODY}" required autofocus>${action === "edit" ? escapeHtml(comment.body) : ""}</textarea>`
+      : "";
   const form = `
     <p><b>${escapeHtml(comment.name)}</b> · ${escapeHtml(comment.slug)} · ${comment.status === "visible" ? "공개" : "숨김"}</p>
-    <blockquote>${escapeHtml(comment.body).replace(/\n/g, "<br>")}</blockquote>
+    ${action === "edit" ? "" : `<blockquote>${escapeHtml(comment.body).replace(/\n/g, "<br>")}</blockquote>`}
     <form method="post">
       <input type="hidden" name="id" value="${escapeHtml(id)}">
       <input type="hidden" name="action" value="${escapeHtml(action)}">
+      <input type="hidden" name="e" value="${escapeHtml(exp)}">
       <input type="hidden" name="t" value="${escapeHtml(token)}">
-      ${replyField}
+      ${textField}
       <button type="submit">${ACTIONS[action].label}</button>
     </form>`;
   return page(form, 200, true);
